@@ -1,17 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi.Models;
+using System.Xml;
 
-namespace MyCmsWebApi.DataLayer.DbContext
+namespace MyCmsWebApi
 {
     public class CmsDbContext : DbContext
     {
 
-        public CmsDbContext
-                (DbContextOptions<CmsDbContext> options)
-                : base(options)
-        {
+        public CmsDbContext(DbContextOptions<CmsDbContext> options) : base(options) { }
 
-        }
+     
 
 
         public DbSet<AdminLogIn> AdminLogIn { get; set; }
