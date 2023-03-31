@@ -1,4 +1,4 @@
-﻿namespace MyCmsWebApi.Models;
+﻿namespace MyCmsWebApi2.DataLayer.Model;
 
 public class AdminLogIn
 {

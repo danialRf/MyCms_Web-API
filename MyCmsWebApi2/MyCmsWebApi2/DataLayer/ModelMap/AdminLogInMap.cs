@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyCmsWebApi.Models;
+using MyCmsWebApi2.DataLayer.Model;
 
-namespace MyCmsWebApi.ModelMap;
+namespace MyCmsWebApi2.DataLayer.ModelMap;
 
 public class AdminLogInMap:IEntityTypeConfiguration<AdminLogIn>
 {
