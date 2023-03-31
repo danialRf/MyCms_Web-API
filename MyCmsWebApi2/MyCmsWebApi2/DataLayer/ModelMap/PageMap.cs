@@ -12,9 +12,6 @@ public class PageMap:IEntityTypeConfiguration<Page>
 
         builder.HasKey(p => p.PageId);
 
-        builder.Property(p => p.PageGroupId)
-            .IsRequired();
-
         builder.Property(p => p.Title)
             .IsRequired()
             .HasMaxLength(50);
@@ -46,7 +43,7 @@ public class PageMap:IEntityTypeConfiguration<Page>
         
         builder.HasOne(p => p.pageGroup)
             .WithMany(p => p.page)
-            .HasForeignKey(p => p.PageGroupId)
+            .HasForeignKey(p => p.pageGroupId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
