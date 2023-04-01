@@ -36,10 +36,7 @@ public class PageMap:IEntityTypeConfiguration<Page>
         builder.Property(p => p.Tags)
             .HasMaxLength(300);
 
-        builder.HasOne(p => p.comments)
-            .WithOne(p => p.page)
-            .HasForeignKey<Comments>(p => p.PageId)
-            .OnDelete(DeleteBehavior.Cascade);
+        
         
         builder.HasOne(p => p.pageGroup)
             .WithMany(p => p.page)

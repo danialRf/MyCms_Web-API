@@ -26,5 +26,10 @@ public class CommentMap:IEntityTypeConfiguration<Comments>
         builder.Property(p => p.CommentText)
             .IsRequired()
             .HasMaxLength(500);
+        
+        builder.HasOne(p => p.page)
+            .WithMany(p => p.comments)
+            .HasForeignKey(p => p.PageId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

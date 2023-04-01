@@ -13,20 +13,16 @@ public class AdminLogInMap:IEntityTypeConfiguration<AdminLogIn>
         builder.HasKey(p => p.LoginId);
 
         builder.Property(p => p.UserName)
-            .HasColumnName("نام کاربری")
             .HasMaxLength(150)
             .IsRequired();
 
         builder.Property(p => p.Email)
             .IsRequired()
-            .HasMaxLength(150)
-            .HasColumnName("ایمیل");
+            .HasMaxLength(150);
 
         builder.Property(p => p.Passwords)
             .IsRequired()
-            .HasMaxLength(50)
-            .HasColumnName("کلمه عبور");
-        
+            .HasMaxLength(50);
     }
 }
 

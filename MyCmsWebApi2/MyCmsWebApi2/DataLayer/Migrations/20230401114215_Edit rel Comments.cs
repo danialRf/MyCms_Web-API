@@ -5,7 +5,7 @@
 namespace MyCmsWebApi2.DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class mi4 : Migration
+    public partial class EditrelComments : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using MyCmsWebApi2.DataLayer.Context;
 namespace MyCmsWebApi2.DataLayer.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    [Migration("20230331212530_mi2")]
-    partial class mi2
+    [Migration("20230401114527_Edit table AdminLogin")]
+    partial class EdittableAdminLogin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

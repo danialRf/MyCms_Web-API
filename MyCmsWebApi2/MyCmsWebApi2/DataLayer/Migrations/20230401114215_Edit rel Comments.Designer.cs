@@ -12,8 +12,8 @@ using MyCmsWebApi2.DataLayer.Context;
 namespace MyCmsWebApi2.DataLayer.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    [Migration("20230331212653_mi3")]
-    partial class mi3
+    [Migration("20230401114215_Edit rel Comments")]
+    partial class EditrelComments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -14,5 +14,5 @@ public class Page
     public string Tags { get; set; } = String.Empty;
    // public  int ImagesId { get; set; }
     public virtual ICollection<Images>  images { get; set; }
-    public virtual Comments comments { get; set; }
+    public virtual ICollection<Comments> comments { get; set; }
 }

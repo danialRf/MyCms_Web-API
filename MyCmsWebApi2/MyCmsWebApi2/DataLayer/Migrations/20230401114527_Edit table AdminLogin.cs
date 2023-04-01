@@ -5,7 +5,7 @@
 namespace MyCmsWebApi2.DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class mi3 : Migration
+    public partial class EdittableAdminLogin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
