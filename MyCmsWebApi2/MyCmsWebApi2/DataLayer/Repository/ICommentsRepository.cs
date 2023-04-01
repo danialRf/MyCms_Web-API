@@ -1,6 +1,14 @@
-﻿namespace MyCmsWebApi2.DataLayer.Repository;
+﻿using MyCmsWebApi2.DataLayer.Model;
 
-public interface ICommentsRepository
-{
-    
-}
+namespace MyCmsWebApi2.DataLayer.Repository;
+
+
+    public interface ICommentRepository
+    {
+        Task<List<Comments>> GetAllAsync();
+        Task<Comments> GetCommentByIdAsync(int id);
+        Task<Comments> InsertCommentAsync(Comments comment);
+        Task UpdateCommentAsync(Comments comment);
+        Task DeleteCommentByIdAsync(int id);
+    }
+
