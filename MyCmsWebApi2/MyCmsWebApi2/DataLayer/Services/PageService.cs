@@ -16,7 +16,7 @@ public class PageService:IPageRepository
     }
 
 
-    public async Task<List<Page>> GetAllAsync()
+    public async Task<List< GetAllAsync()
     {
         return await _context.page.ToListAsync();
     }
