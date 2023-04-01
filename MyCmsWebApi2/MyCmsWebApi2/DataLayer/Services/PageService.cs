@@ -16,15 +16,20 @@ public class PageService:IPageRepository
     }
 
 
-    public async Task<List< GetAllAsync()
-    {
-        return await _context.page.ToListAsync();
-    }
+    //public async Task<List> GetAllAsync()
+    //{
+    //    return await _context.page.ToListAsync();
+    //}
 
     public async Task<Page> GetPageByIdAsync(int id)
     {
         return await _context.page.FirstOrDefaultAsync(p => p.PageId == id);
 
+    }
+
+    public async Task<List<Page>> GetAllAsync()
+    {
+        return await _context.page.ToListAsync();
     }
 
     public async Task<Page> InsertPageAsync(Page page)
@@ -52,4 +57,6 @@ public class PageService:IPageRepository
         var result = await _context.page.AnyAsync(p => p.PageId == id);
         return result;
     }
+
+   
 }

@@ -17,7 +17,7 @@ public class ImagesMap:IEntityTypeConfiguration<Images>
 
         builder.HasOne(p => p.page)
             .WithMany(p => p.images)
-            .HasForeignKey(p => p.PageId)
+            .HasForeignKey(p => p.imageId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
