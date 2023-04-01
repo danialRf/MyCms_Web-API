@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.DataLayer.Context;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
@@ -20,6 +19,10 @@ public class PageService:IPageRepository
     //{
     //    return await _context.page.ToListAsync();
     //}
+    public async Task<List<Page>> GetAllAsync()
+    {
+        return await _context.page.ToListAsync();
+    }
 
     public async Task<Page> GetPageByIdAsync(int id)
     {
@@ -59,4 +62,5 @@ public class PageService:IPageRepository
     }
 
    
+}
 }
