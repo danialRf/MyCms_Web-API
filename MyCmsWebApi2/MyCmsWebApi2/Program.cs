@@ -1,42 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MyCmsWebApi2.DataLayer.Context;
+using MyCmsWebApi2.DataLayer.Repository;
+using MyCmsWebApi2.DataLayer.Services;
 using System.Configuration;
-
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-
-//builder.Services.AddControllers();
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//var connectionString = Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<CmsDbContext>(options => options.UseSqlServer(connectionString));
-
-////builder.Services.AddDbContext<CmsDbContext>(options =>
-////    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-
-//app.MapControllers();
-
-//app.Run();
-
-
 
 
 
@@ -47,6 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICommentRepository,CommentService>();
+builder.Services.AddScoped<IImageRepository, ImageService>();
+builder.Services.AddScoped<IPageRepository,PageService>();
+builder.Services.AddScoped<IPageGroupRepository, PageGroupService>();
+
+
 
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
