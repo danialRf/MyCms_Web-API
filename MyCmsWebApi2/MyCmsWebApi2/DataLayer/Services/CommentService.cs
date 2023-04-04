@@ -11,9 +11,11 @@ namespace MyCmsWebApi2.DataLayer.Services
     {
         private readonly CmsDbContext _context;
 
-        public CommentRepository(CmsDbContext context)
+        public CommentService(CmsDbContext context)
         {
-            _context = context;
+             _context = context;
+
+
         }
 
         public async Task<List<Comments>> GetAllAsync()
