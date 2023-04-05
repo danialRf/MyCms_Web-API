@@ -8,6 +8,7 @@ namespace MyCmsWebApi2.Profiles
     {
         public PageGroupProfile()
         {
+            CreateMap<PageGroup, PageGroupDto>();
             CreateMap<PageGroupDto,PageGroup>();
         }
     }
