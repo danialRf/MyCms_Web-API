@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MyCmsWebApi2.DataLayer.Context;
 using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.DataLayer.Services;
@@ -14,7 +13,6 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
-var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
