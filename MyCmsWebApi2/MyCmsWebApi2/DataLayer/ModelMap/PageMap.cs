@@ -11,6 +11,7 @@ public class PageMap:IEntityTypeConfiguration<Page>
         builder.ToTable("Page");
 
         builder.HasKey(p => p.PageId);
+        builder.Property(x => x.PageId).ValueGeneratedOnAdd();
 
         builder.Property(p => p.Title)
             .IsRequired()

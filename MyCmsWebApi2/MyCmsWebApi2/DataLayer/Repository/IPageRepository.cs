@@ -1,4 +1,5 @@
 ﻿using MyCmsWebApi2.DataLayer.Model;
+using MyCmsWebApi2.Dtos;
 
 namespace MyCmsWebApi2.DataLayer.Repository;
 

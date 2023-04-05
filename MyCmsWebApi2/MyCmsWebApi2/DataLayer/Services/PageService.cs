@@ -2,6 +2,7 @@
 using MyCmsWebApi2.DataLayer.Context;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
+using MyCmsWebApi2.Dtos;
 
 namespace MyCmsWebApi2.DataLayer.Services;
 
@@ -58,6 +59,11 @@ public class PageService:IPageRepository
         return result;
     }
 
-   
+    public async Task<PageDto> InsertPageAsync(PageDto page)
+    {
+        await _context.AddAsync(page);
+        await _context.SaveChangesAsync();
+        return page;
+    }
 }
 

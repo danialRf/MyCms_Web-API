@@ -10,9 +10,11 @@ public class Page
     public string Text { get; set; } = String.Empty;
     public int Visit { get; set; }
     public bool ShowInSlider { get; set; }
-    public DateTime CreateDate { get; set; }
+    public DateTime CreateDate { get; set; }= DateTime.Now;
     public string Tags { get; set; } = String.Empty;
    // public  int ImagesId { get; set; }
     public virtual ICollection<Images>  images { get; set; }
     public virtual ICollection<Comments> comments { get; set; }
+
+    
 }
