@@ -9,4 +9,5 @@ public interface IPageGroupRepository
     Task<PageGroup> InsertPageGroupAsync(PageGroup pageGroup);
     Task UpdatePageGroupAsync(PageGroup pageGroup);
     Task DeletePageGroupByIdAsync(int id);
+    Task<bool> PageGroupExist(int id);
 }

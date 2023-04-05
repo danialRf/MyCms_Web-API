@@ -2,5 +2,6 @@
 {
     public class PageGroupDto
     {
+        public string GroupTitle { get; set; }
     }
 }
