@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCmsWebApi2.DataLayer.Repository;
 
-namespace MyCmsWebApi2.Controllers.AdminControllers;
-[ApiController]
-[Route("api/admin/[controller]")]
+namespace MyCmsWebApi2.Controllers.AdminControllers
+{
+    [ApiController]
+    [Route("api/admin/[controller]")]
 
 public class PageController:ControllerBase
 {
@@ -48,4 +49,5 @@ public class PageController:ControllerBase
 
 
 
+    }
 }

@@ -27,6 +27,7 @@ public class PageGroupService:IPageGroupRepository
     public async Task<PageGroup> InsertPageGroupAsync(PageGroup pageGroup)
     {
         await _context.AddAsync(pageGroup);
+        await _context.SaveChangesAsync();
         return pageGroup;
     }
 
@@ -40,5 +41,11 @@ public class PageGroupService:IPageGroupRepository
     {
          _context.Remove(new PageGroup { PageGroupId = id });
          await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> PageGroupExist(int id)
+    {
+        var result = await _context.pageGroup.AnyAsync(p=>p.PageGroupId== id);
+        return result;
     }
 }
