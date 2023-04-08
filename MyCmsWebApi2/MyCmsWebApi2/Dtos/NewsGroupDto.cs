@@ -1,8 +1,8 @@
 ﻿namespace MyCmsWebApi2.Dtos
 {
-    public class PageGroupDto
+    public class NewsGroupDto
     {
-        public int PageGroupId { get; set; }
+        public int Id { get; set; }
         public string GroupTitle { get; set; }
     }
 }

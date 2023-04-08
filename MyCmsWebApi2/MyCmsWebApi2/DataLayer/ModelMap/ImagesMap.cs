@@ -10,14 +10,14 @@ public class ImagesMap:IEntityTypeConfiguration<Images>
     {
         builder.ToTable("Images");
 
-        builder.HasKey(p => p.ImagesId);
+        builder.HasKey(p => p.Id);
 
         builder.Property(p => p.ImageName)
             .IsRequired();
 
-        builder.HasOne(p => p.page)
-            .WithMany(p => p.images)
-            .HasForeignKey(p => p.imageId)
+        builder.HasOne(p => p.News)
+            .WithMany(p => p.Images)
+            .HasForeignKey(p => p.NewsId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

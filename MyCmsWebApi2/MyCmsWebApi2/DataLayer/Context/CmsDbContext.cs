@@ -12,11 +12,11 @@ namespace MyCmsWebApi2.DataLayer.Context
             
         }
         
-        public DbSet<AdminLogIn> adminLogin { get; set; }
-        public DbSet<Comments> comments { get; set; }
-        public DbSet<Images> images { get; set; }
-        public DbSet<PageGroup> pageGroup { get; set; }
-        public DbSet<Page> page { get; set; }
+        public DbSet<AdminLogIn> AdminLogin { get; set; }
+        public DbSet<Comments> Comments { get; set; }
+        public DbSet<Images> Images { get; set; }
+        public DbSet<NewsGroup> NewsGroup { get; set; }
+        public DbSet<News> News { get; set; }
         
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

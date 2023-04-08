@@ -2,11 +2,11 @@
 
 public class Images
 {
-    public int ImagesId { get; set; }
+    public int Id { get; set; }
     public string ImageName { get; set; } = String.Empty;
     public DateTime CreateDate { get; set; }
-    public int imageId { get; set; }
-    public virtual Page page { get; set; }
-    public int PageGrupId { get; set; }
-    public virtual PageGroup pageGroup { get; set; }
+    public virtual News News { get; set; }
+    public int  NewsId { get; set; }
+    public int NewsGroupId { get; set; }
+    public virtual NewsGroup NewsGroup { get; set; }
 }

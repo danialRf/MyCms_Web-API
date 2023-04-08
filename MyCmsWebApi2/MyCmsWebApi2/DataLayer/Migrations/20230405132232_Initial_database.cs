@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace MyCmsWebApi2.DataLayer.Migrations
+namespace MyCmsWebApi2.Migrations
 {
     /// <inheritdoc />
-    public partial class EdittableAdminLogin : Migration
+    public partial class Initial_database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

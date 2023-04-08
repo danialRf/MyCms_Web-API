@@ -10,7 +10,7 @@ public class CommentMap:IEntityTypeConfiguration<Comments>
     {
         builder.ToTable("Comments");
 
-        builder.HasKey(p => p.CommentId);
+        builder.HasKey(p => p.Id);
 
         builder.Property(p => p.CommentName)
             .HasMaxLength(100)
@@ -27,9 +27,9 @@ public class CommentMap:IEntityTypeConfiguration<Comments>
             .IsRequired()
             .HasMaxLength(500);
         
-        builder.HasOne(p => p.page)
-            .WithMany(p => p.comments)
-            .HasForeignKey(p => p.PageId)
+        builder.HasOne(p => p.News)
+            .WithMany(p => p.Comments)
+            .HasForeignKey(p => p.NewsId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

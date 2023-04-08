@@ -9,11 +9,11 @@ using MyCmsWebApi2.DataLayer.Context;
 
 #nullable disable
 
-namespace MyCmsWebApi2.DataLayer.Migrations
+namespace MyCmsWebApi2.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    [Migration("20230401114215_Edit rel Comments")]
-    partial class EditrelComments
+    [Migration("20230405130220_InitialDataBase")]
+    partial class InitialDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,42 +27,36 @@ namespace MyCmsWebApi2.DataLayer.Migrations
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.AdminLogIn", b =>
                 {
-                    b.Property<int>("LoginId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoginId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("ایمیل");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Passwords")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("کلمه عبور");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("نام کاربری");
+                        .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("LoginId");
+                    b.HasKey("Id");
 
-                    b.ToTable("Admin Login", (string)null);
+                    b.ToTable("AdminLogin", (string)null);
                 });
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Comments", b =>
                 {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
                     b.Property<string>("CommentEmail")
                         .IsRequired()
@@ -90,55 +84,45 @@ namespace MyCmsWebApi2.DataLayer.Migrations
                     b.Property<int>("PageId")
                         .HasColumnType("int");
 
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("PageId")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
                 {
-                    b.Property<int>("ImagesId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImagesId"));
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PageGrupId")
+                    b.Property<int>("NewsGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImagesId");
-
-                    b.HasIndex("PageGrupId")
-                        .IsUnique();
-
-                    b.HasIndex("PageId");
+                    b.HasKey("Id");
 
                     b.ToTable("Images", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Page", b =>
+            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
                 {
-                    b.Property<int>("PageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PageId"));
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("NewsGroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
@@ -166,89 +150,83 @@ namespace MyCmsWebApi2.DataLayer.Migrations
                     b.Property<int>("Visit")
                         .HasColumnType("int");
 
-                    b.Property<int>("pageGroupId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("PageId");
-
-                    b.HasIndex("pageGroupId");
-
-                    b.ToTable("Page", (string)null);
+                    b.ToTable("News", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.PageGroup", b =>
+            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.NewsGroup", b =>
                 {
-                    b.Property<int>("PageGroupId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PageGroupId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("GroupTitle")
                         .IsRequired()
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
 
-                    b.HasKey("PageGroupId");
+                    b.HasKey("Id");
 
-                    b.ToTable("Page Groups", (string)null);
+                    b.ToTable("NewsGroup", (string)null);
                 });
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Comments", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.Page", "page")
-                        .WithOne("comments")
-                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Comments", "PageId")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
+                        .WithMany("Comments")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("page");
+                    b.Navigation("News");
                 });
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.PageGroup", "pageGroup")
-                        .WithOne("images")
-                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Images", "PageGrupId")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
+                        .WithMany("Images")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.Page", "page")
-                        .WithMany("images")
-                        .HasForeignKey("PageId")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
+                        .WithOne("Images")
+                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Images", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("page");
+                    b.Navigation("News");
 
-                    b.Navigation("pageGroup");
+                    b.Navigation("NewsGroup");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Page", b =>
+            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.PageGroup", "pageGroup")
-                        .WithMany("page")
-                        .HasForeignKey("pageGroupId")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
+                        .WithMany("News")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("pageGroup");
+                    b.Navigation("NewsGroup");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Page", b =>
+            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
                 {
-                    b.Navigation("comments")
-                        .IsRequired();
+                    b.Navigation("Comments");
 
-                    b.Navigation("images");
+                    b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.PageGroup", b =>
+            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.NewsGroup", b =>
                 {
-                    b.Navigation("images")
+                    b.Navigation("Images")
                         .IsRequired();
 
-                    b.Navigation("page");
+                    b.Navigation("News");
                 });
 #pragma warning restore 612, 618
         }

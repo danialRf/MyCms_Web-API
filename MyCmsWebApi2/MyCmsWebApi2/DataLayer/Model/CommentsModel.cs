@@ -2,9 +2,9 @@
 
 public class Comments
 {
-    public int CommentId { get; set; }
-    public int PageId { get; set; }
-    public virtual Page page { get; set; }
+    public int Id { get; set; }
+    public int NewsId { get; set; }
+    public virtual News News { get; set; }
     public string CommentName { get; set; } = String.Empty;
     public string CommentEmail { get; set; } = String.Empty;
     public string CommentSubject { get; set; } = String.Empty;

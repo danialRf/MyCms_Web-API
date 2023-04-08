@@ -4,14 +4,14 @@ using MyCmsWebApi2.DataLayer.Model;
 
 namespace MyCmsWebApi2.DataLayer.ModelMap;
 
-public class PageMap:IEntityTypeConfiguration<Page>
+public class NewsMap:IEntityTypeConfiguration<News>
 {
-    public void Configure(EntityTypeBuilder<Page> builder)
+    public void Configure(EntityTypeBuilder<News> builder)
     {
-        builder.ToTable("Page");
+        builder.ToTable("News");
 
-        builder.HasKey(p => p.PageId);
-        builder.Property(x => x.PageId).ValueGeneratedOnAdd();
+        builder.HasKey(p => p.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.Property(p => p.Title)
             .IsRequired()
@@ -39,9 +39,9 @@ public class PageMap:IEntityTypeConfiguration<Page>
 
         
         
-        builder.HasOne(p => p.pageGroup)
-            .WithMany(p => p.page)
-            .HasForeignKey(p => p.pageGroupId)
+        builder.HasOne(p => p.NewsGroup)
+            .WithMany(p => p.News)
+            .HasForeignKey(p => p.NewsGroupId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
