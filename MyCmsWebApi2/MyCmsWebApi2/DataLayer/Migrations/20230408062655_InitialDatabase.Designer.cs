@@ -12,8 +12,8 @@ using MyCmsWebApi2.DataLayer.Context;
 namespace MyCmsWebApi2.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    [Migration("20230405130220_InitialDataBase")]
-    partial class InitialDataBase
+    [Migration("20230408062655_InitialDatabase")]
+    partial class InitialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,10 @@ namespace MyCmsWebApi2.Migrations
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Comments", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CommentEmail")
                         .IsRequired()
@@ -81,10 +84,12 @@ namespace MyCmsWebApi2.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PageId")
+                    b.Property<int>("NewsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NewsId");
 
                     b.ToTable("Comments", (string)null);
                 });
@@ -92,13 +97,13 @@ namespace MyCmsWebApi2.Migrations
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ImageName")
                         .IsRequired()
@@ -107,7 +112,15 @@ namespace MyCmsWebApi2.Migrations
                     b.Property<int>("NewsGroupId")
                         .HasColumnType("int");
 
+                    b.Property<int>("NewsId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("NewsGroupId")
+                        .IsUnique();
+
+                    b.HasIndex("NewsId");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -117,6 +130,8 @@ namespace MyCmsWebApi2.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -152,6 +167,8 @@ namespace MyCmsWebApi2.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NewsGroupId");
+
                     b.ToTable("News", (string)null);
                 });
 
@@ -177,7 +194,7 @@ namespace MyCmsWebApi2.Migrations
                 {
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
                         .WithMany("Comments")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -186,15 +203,15 @@ namespace MyCmsWebApi2.Migrations
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
-                        .WithMany("Images")
-                        .HasForeignKey("Id")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
+                        .WithOne("Images")
+                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Images", "NewsGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
-                        .WithOne("Images")
-                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Images", "Id")
+                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
+                        .WithMany("Images")
+                        .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -207,7 +224,7 @@ namespace MyCmsWebApi2.Migrations
                 {
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
                         .WithMany("News")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("NewsGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

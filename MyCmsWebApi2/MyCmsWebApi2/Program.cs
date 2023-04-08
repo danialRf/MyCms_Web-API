@@ -11,7 +11,7 @@ using System.Configuration;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/CmsInfo.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

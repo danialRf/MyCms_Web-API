@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyCmsWebApi2.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDataBase : Migration
+    public partial class InitialDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,7 +43,8 @@ namespace MyCmsWebApi2.Migrations
                 name: "News",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NewsGroupId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
@@ -57,8 +58,8 @@ namespace MyCmsWebApi2.Migrations
                 {
                     table.PrimaryKey("PK_News", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_News_NewsGroup_Id",
-                        column: x => x.Id,
+                        name: "FK_News_NewsGroup_NewsGroupId",
+                        column: x => x.NewsGroupId,
                         principalTable: "NewsGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -68,8 +69,9 @@ namespace MyCmsWebApi2.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PageId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NewsId = table.Column<int>(type: "int", nullable: false),
                     CommentName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CommentEmail = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     CommentSubject = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -80,8 +82,8 @@ namespace MyCmsWebApi2.Migrations
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_News_Id",
-                        column: x => x.Id,
+                        name: "FK_Comments_News_NewsId",
+                        column: x => x.NewsId,
                         principalTable: "News",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -91,28 +93,50 @@ namespace MyCmsWebApi2.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    NewsId = table.Column<int>(type: "int", nullable: false),
                     NewsGroupId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_NewsGroup_Id",
-                        column: x => x.Id,
+                        name: "FK_Images_NewsGroup_NewsGroupId",
+                        column: x => x.NewsGroupId,
                         principalTable: "NewsGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Images_News_Id",
-                        column: x => x.Id,
+                        name: "FK_Images_News_NewsId",
+                        column: x => x.NewsId,
                         principalTable: "News",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_NewsId",
+                table: "Comments",
+                column: "NewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_NewsGroupId",
+                table: "Images",
+                column: "NewsGroupId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_NewsId",
+                table: "Images",
+                column: "NewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_News_NewsGroupId",
+                table: "News",
+                column: "NewsGroupId");
         }
 
         /// <inheritdoc />
