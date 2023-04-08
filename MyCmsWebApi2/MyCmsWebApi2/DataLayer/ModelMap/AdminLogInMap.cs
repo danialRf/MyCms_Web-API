@@ -8,9 +8,9 @@ public class AdminLogInMap:IEntityTypeConfiguration<AdminLogIn>
 {
     public void Configure(EntityTypeBuilder<AdminLogIn> builder)
     {
-        builder.ToTable("Admin Login");
+        builder.ToTable("AdminLogin");
         
-        builder.HasKey(p => p.LoginId);
+        builder.HasKey(p => p.Id);
 
         builder.Property(p => p.UserName)
             .HasMaxLength(150)

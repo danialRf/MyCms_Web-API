@@ -5,12 +5,12 @@ using MyCmsWebApi2.Dtos;
 
 namespace MyCmsWebApi2.Profiles
 {
-    public class PageProfile: Profile
+    public class NewsProfile: Profile
     {
-        public PageProfile()
+        public NewsProfile()
         {
-            CreateMap<Page,PageDto>();
-            CreateMap<PageDto, Page>();
+            CreateMap<News, NewsDto>();
+            CreateMap<NewsDto, News>();
         }
     }
 }

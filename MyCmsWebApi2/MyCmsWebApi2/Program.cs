@@ -13,7 +13,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
-
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,8 +23,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICommentRepository,CommentService>();
 builder.Services.AddScoped<IImageRepository, ImageService>();
-builder.Services.AddScoped<IPageRepository,PageService>();
-builder.Services.AddScoped<IPageGroupRepository, PageGroupService>();
+builder.Services.AddScoped<INewsRepository,NewsService>();
+builder.Services.AddScoped<INewsGroupRepository, NewsGroupService>();
 
 
 

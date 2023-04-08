@@ -17,19 +17,19 @@ namespace MyCmsWebApi2.DataLayer.Services
 
         public async Task<Images> GetPageByIdAsync(int id)
         {
-            return await _context.images.FirstOrDefaultAsync(p => p.ImagesId == id);
+            return await _context.Images.FirstOrDefaultAsync(p => p.Id == id);
         }
 
 
         public async Task<List<Images>> GetAllAsync()
         {
-            return await _context.images.ToListAsync();
+            return await _context.Images.ToListAsync();
         }
 
 
         public async Task DeleteImageByIdAsync(int id)
         {
-            _context.Remove(new Images { imageId = id });
+            _context.Remove(new Images { Id = id });
             await _context.SaveChangesAsync();
         }
 
@@ -39,7 +39,7 @@ namespace MyCmsWebApi2.DataLayer.Services
 
         public async Task<bool> ImageExist(int id)
         {
-            var result = await _context.images.AnyAsync(p => p.imageId == id);
+            var result = await _context.Images.AnyAsync(p => p.Id == id);
             return result;
         }
 
