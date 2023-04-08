@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
-using MyCmsWebApi2.Dtos;
+using MyCmsWebApi2.Dtos.NewsGroupDto;
+using MyCmsWebApi2.Dtos.NewsGroupDto.NewsGroupDto;
+using Serilog;
+using Serilog.Core;
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
 {
@@ -13,46 +17,50 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
     {
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly IMapper _mapper;
+        private readonly Logger<NewsGroupController> _logger;
 
-        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper)
+
+        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, Logger<NewsGroupController> logger)
         {
             _newsGroupRepository = newsGroupRepository;
             _mapper = mapper;
+            //_logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsGroupDto>>> GetAllNewsGroupAsync()
+        public async Task<ActionResult<IEnumerable<ShowNewsGroupDto>>> GetAllNewsGroupAsync()
         {
             var newsGroup= await _newsGroupRepository.GetAllAsync();
-            var result = _mapper.Map<List<NewsGroupDto>>(newsGroup);
+            var result = _mapper.Map<List<ShowNewsGroupDto>>(newsGroup);
 
             return Ok(result);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<NewsGroupDto>> GetNewsGroupById(int id)
+        public async Task<ActionResult<ShowNewsGroupDto>> GetNewsGroupById(int id)
         {
             if (await _newsGroupRepository.NewsGroupExist(id) == false)
                 return NotFound();
 
             var result = await _newsGroupRepository.GetNewsGroupByIdAsync(id);
 
-            return Ok(_mapper.Map<NewsGroupDto>(result));
+            return Ok(_mapper.Map<ShowNewsGroupDto>(result));
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<NewsGroupDto>> PostNewsGroupAsync([FromBody] NewsGroupDto newsGroupDto)
+        public async Task<ActionResult<ShowNewsGroupDto>> PostNewsGroupAsync([FromBody] AddNewsGroupDto newsGroupDto)
         {
             var newsGroup = _mapper.Map<NewsGroup>(newsGroupDto);
             var result = await _newsGroupRepository.InsertNewsGroupAsync(newsGroup);
 
+            _logger.LogInformation($"{newsGroupDto} Create NewsGroup");
             return CreatedAtAction(nameof(GetNewsGroupById), new { id = newsGroup.Id }, newsGroup);
         }
 
         [HttpPut]
-        public async Task<ActionResult<NewsGroupDto>> PutPageGroupAsync([FromBody] NewsGroupDto newsGroupDto)
+        public async Task<ActionResult> PutPageGroupAsync([FromBody] EditNewsGroupDto newsGroupDto)
         {
             if (await _newsGroupRepository.NewsGroupExist(newsGroupDto.Id) == false) 
                 return NotFound();
@@ -68,7 +76,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<NewsGroupDto>> DeleteNewsGroupAsync(int id)
+        public async Task<ActionResult> DeleteNewsGroupAsync(int id)
         {
             if (await _newsGroupRepository.NewsGroupExist(id) == false)
                 return NotFound();
