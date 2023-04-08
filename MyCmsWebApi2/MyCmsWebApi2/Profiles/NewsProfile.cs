@@ -9,8 +9,9 @@ namespace MyCmsWebApi2.Profiles
     {
         public NewsProfile()
         {
-            CreateMap<News, NewsDto>();
-            CreateMap<NewsDto, News>();
+            CreateMap<News, AddNewsDto>();
+            CreateMap<EditNewsDto, News>();
+            CreateMap<AddNewsDto, News>();
         }
     }
 }

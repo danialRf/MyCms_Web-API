@@ -1,6 +1,6 @@
 ﻿namespace MyCmsWebApi2.Dtos
 {
-    public class NewsDto
+    public class AddNewsDto
     {
         public int? Id { get; set; }
         public int NewsGroupId { get; set; }

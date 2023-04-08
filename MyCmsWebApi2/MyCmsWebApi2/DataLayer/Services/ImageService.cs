@@ -15,7 +15,7 @@ namespace MyCmsWebApi2.DataLayer.Services
             _context = context;
         }
 
-        public async Task<Images> GetPageByIdAsync(int id)
+        public async Task<Images> GetImageByIdAsync(int id)
         {
             return await _context.Images.FirstOrDefaultAsync(p => p.Id == id);
         }
