@@ -20,11 +20,11 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         private readonly Logger<NewsGroupController> _logger;
 
 
-        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, Logger<NewsGroupController> logger)
+        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper)
         {
             _newsGroupRepository = newsGroupRepository;
             _mapper = mapper;
-            //_logger = logger;
+           
         }
 
         [HttpGet]

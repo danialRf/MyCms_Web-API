@@ -9,17 +9,13 @@ namespace MyCmsWebApi2.DataLayer.Services;
 public class NewsService:INewsRepository
 {
     private readonly CmsDbContext _context;
+   
 
     public NewsService(CmsDbContext context)
     {
         _context = context;
     }
 
-
-    //public async Task<List> GetAllAsync()
-    //{
-    //    return await _context.page.ToListAsync();
-    //}
     public async Task<List<News>> GetAllAsync()
     {
         return await _context.News.ToListAsync();
@@ -58,12 +54,5 @@ public class NewsService:INewsRepository
         var result = await _context.News.AnyAsync(p => p.Id == id);
         return result;
     }
-
-    //public async Task<NewsDto> InsertPageAsync(NewsDto news)
-    //{
-    //    await _context.AddAsync(news);
-    //    await _context.SaveChangesAsync();
-    //    return news;
-    //}
 }
 
