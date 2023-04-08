@@ -4,23 +4,19 @@ using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.DataLayer.Services;
 using Serilog;
 using System.Configuration;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
-
-
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
-    .WriteTo.File("logs/CmsInfo.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File($"C://Users/User/OneDrive/Documents/Cms logs/Cms log {DateTime.Now:yyyy-MM-dd-}.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
+
+
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
 
 builder.Host.UseSerilog();
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -65,6 +61,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (IServiceScope scope = app.Services.CreateAsyncScope())
+{
+    var content = scope.ServiceProvider.GetService<CmsDbContext>();
+    await content.Database.MigrateAsync();
+}
 
 app.Run();
 

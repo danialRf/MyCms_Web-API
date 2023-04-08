@@ -17,14 +17,14 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
     {
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly IMapper _mapper;
-        private readonly Logger<NewsGroupController> _logger;
+        private readonly ILogger<NewsGroupController> _logger;
 
 
-        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper)
+        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, ILogger<NewsGroupController> logger)
         {
             _newsGroupRepository = newsGroupRepository;
             _mapper = mapper;
-           
+            _logger = logger;
         }
 
         [HttpGet]
