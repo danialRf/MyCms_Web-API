@@ -12,8 +12,6 @@ namespace MyCmsWebApi2.Profiles
             CreateMap<NewsGroup, ShowNewsGroupDto>();
             CreateMap<AddNewsGroupDto,NewsGroup>();
             CreateMap<EditNewsGroupDto, NewsGroup>();
-            
-
         }
     }
 }
