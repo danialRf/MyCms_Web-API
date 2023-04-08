@@ -1,6 +1,6 @@
 ﻿namespace MyCmsWebApi2.Dtos
 {
-    public class CommentDto
+    public class GetCommentDto
     {
         public int Id { get; set; }
         public string UserName { get; set; }

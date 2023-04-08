@@ -4,7 +4,10 @@ using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.DataLayer.Services;
 using Serilog;
 using System.Configuration;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 
 
 
@@ -45,6 +48,7 @@ builder.Services.AddLogging(loggingBuilder =>
 
 
 var app = builder.Build();
+builder.Host.UseSerilog();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
