@@ -9,5 +9,5 @@ public interface INewsGroupRepository
     Task<NewsGroup> InsertNewsGroupAsync(NewsGroup newsGroup);
     Task UpdateNewsGroupAsync(NewsGroup newsGroup);
     Task DeleteNewsGroupByIdAsync(int id);
-    Task<bool> NewsGroupExist(int id);
+    Task<bool> NewsGroupExistAsync(int id);
 }

@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
-using MyCmsWebApi2.Dtos.NewsGroupDto;
-using MyCmsWebApi2.Dtos.NewsGroupDto.NewsGroupDto;
-using Serilog;
-using Serilog.Core;
+using MyCmsWebApi2.Dtos.NewsGroupDto.Admin;
+
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
 {
@@ -28,19 +26,19 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ShowNewsGroupDto>>> GetAllNewsGroupAsync()
+        public async Task<ActionResult<IEnumerable<AdminShowNewsGroupDto>>> GetAllNewsGroupAsync()
         {
             var newsGroup = await _newsGroupRepository.GetAllAsync();
-            var result = _mapper.Map<List<ShowNewsGroupDto>>(newsGroup);
+            var result = _mapper.Map<List<AdminShowNewsGroupDto>>(newsGroup);
 
             return Ok(result);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShowNewsGroupDto>> GetNewsGroupById(int id)
+        public async Task<ActionResult<AdminShowNewsGroupDto>> GetNewsGroupById(int id)
         {
-            if (await _newsGroupRepository.NewsGroupExist(id) == false)
+            if (await _newsGroupRepository.NewsGroupExistAsync(id) == false)
             {
                 return NotFound();
             }
@@ -48,12 +46,12 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
             var result = await _newsGroupRepository.GetNewsGroupByIdAsync(id);
 
-            return Ok(_mapper.Map<ShowNewsGroupDto>(result));
+            return Ok(_mapper.Map<AdminShowNewsGroupDto>(result));
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<ShowNewsGroupDto>> PostNewsGroupAsync([FromBody] AddNewsGroupDto newsGroupDto)
+        public async Task<ActionResult<AdminShowNewsGroupDto>> PostNewsGroupAsync([FromBody] AdminAddNewsGroupDto newsGroupDto)
         {
             if (!ModelState.IsValid)
             {
@@ -67,9 +65,9 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutPageGroupAsync([FromBody] EditNewsGroupDto newsGroupDto)
+        public async Task<ActionResult> PutPageGroupAsync([FromBody] AdminEditNewsGroupDto newsGroupDto)
         {
-            if (await _newsGroupRepository.NewsGroupExist(newsGroupDto.Id) == false)
+            if (await _newsGroupRepository.NewsGroupExistAsync(newsGroupDto.Id) == false)
             {
                 _logger.LogInformation($"GroupTitle '{newsGroupDto.GroupTitle}' Not Found.");
                 return NotFound();
@@ -91,7 +89,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNewsGroupAsync(int id)
         {
-            if (await _newsGroupRepository.NewsGroupExist(id) == false)
+            if (await _newsGroupRepository.NewsGroupExistAsync(id) == false)
             {
                 return NotFound();
             }

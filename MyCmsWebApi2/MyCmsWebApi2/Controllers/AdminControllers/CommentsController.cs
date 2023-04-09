@@ -9,7 +9,7 @@ using MyCmsWebApi2.Dtos;
 namespace MyCmsWebApi2.Controllers.AdminControllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/admin/[controller]")]
 
     public class CommentsController : ControllerBase
     {
@@ -32,4 +32,5 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
             return Accepted();
 
         }
-    }   }
+    }
+}

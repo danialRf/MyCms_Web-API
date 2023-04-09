@@ -21,21 +21,12 @@ namespace MyCmsWebApi2.DataLayer.Services
         }
 
 
-        public async Task<List<Images>> GetAllAsync()
-        {
-            return await _context.Images.ToListAsync();
-        }
-
-
         public async Task DeleteImageByIdAsync(int id)
         {
             _context.Remove(new Images { Id = id });
             await _context.SaveChangesAsync();
         }
 
-     
-
-        
 
         public async Task<bool> ImageExist(int id)
         {

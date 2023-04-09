@@ -26,7 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\UserControllers\" />
+    <Folder Include="Dtos\CommentsDto\Users\" />
+    <Folder Include="Dtos\NewsDto\Users\" />
   </ItemGroup>
 
 </Project>

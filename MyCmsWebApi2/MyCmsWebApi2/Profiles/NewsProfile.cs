@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.Dtos;
-
+using MyCmsWebApi2.Dtos.NewsDto.Admin;
 
 namespace MyCmsWebApi2.Profiles
 {
@@ -9,9 +9,9 @@ namespace MyCmsWebApi2.Profiles
     {
         public NewsProfile()
         {
-            CreateMap<News, AddNewsDto>();
-            CreateMap<EditNewsDto, News>();
-            CreateMap<AddNewsDto, News>();
+            CreateMap<News, AdminAddNewsDto>();
+            CreateMap<AdminEditNewsDto, News>();
+            CreateMap<AdminAddNewsDto, News>();
         }
     }
 }

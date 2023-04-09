@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MyCmsWebApi2.DataLayer.Model;
-using MyCmsWebApi2.Dtos.NewsGroupDto;
-using MyCmsWebApi2.Dtos.NewsGroupDto.NewsGroupDto;
+using MyCmsWebApi2.Dtos.NewsGroupDto.Admin;
 
 namespace MyCmsWebApi2.Profiles
 {
@@ -9,9 +8,11 @@ namespace MyCmsWebApi2.Profiles
     {
         public NewsGroupProfile()
         {
-            CreateMap<NewsGroup, ShowNewsGroupDto>();
-            CreateMap<AddNewsGroupDto,NewsGroup>();
-            CreateMap<EditNewsGroupDto, NewsGroup>();
+            CreateMap<NewsGroup, MyCmsWebApi2.Dtos.NewsGroupDto.Admin.AdminShowNewsGroupDto>();
+            CreateMap<AdminAddNewsGroupDto,NewsGroup>();
+            CreateMap<AdminEditNewsGroupDto, NewsGroup>();
+            CreateMap<NewsGroup, MyCmsWebApi2.Dtos.NewsGroupDto.Users.UserShowNewsGroupDto>();
+
         }
     }
 }

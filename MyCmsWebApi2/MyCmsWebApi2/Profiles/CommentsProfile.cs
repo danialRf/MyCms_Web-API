@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MyCmsWebApi2.DataLayer.Model;
-using MyCmsWebApi2.Dtos.CommentsDto;
+using MyCmsWebApi2.Dtos.CommentsDto.Admin;
 
 namespace MyCmsWebApi2.Profiles
 {
@@ -8,8 +8,8 @@ namespace MyCmsWebApi2.Profiles
     {
         public CommentsProfile()
         {
-            CreateMap<Comments, ShowCommentsDto>();
-            CreateMap<AddCommentsDto,Comments> ();
+            CreateMap<Comments, AdminShowCommentsDto>();
+            CreateMap<AdminAddCommentsDto,Comments> ();
 
         }
     }

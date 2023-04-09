@@ -43,12 +43,24 @@
 //            {
 //                return NotFound();
 //            }
+       
 
 //            var imageFile = System.IO.File.OpenRead(imagePath);
 //            return File(imageFile, "image/jpeg");
 //        }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ShowImagesDto>> GetImagesByIdAsync(int id)
+        {
+            if (await _imageRepository.ImageExist(id) == false)
+                return NotFound();
 
 //    }
+            var result = await _imageRepository.GetImageByIdAsync(id);
 
 //}
+            return Ok(_mapper.Map<ShowImagesDto>(result));
+        }
+
+    }
+}

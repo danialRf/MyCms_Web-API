@@ -43,7 +43,7 @@ public class NewsGroupService:INewsGroupRepository
          await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> NewsGroupExist(int id)
+    public async Task<bool> NewsGroupExistAsync(int id)
     {
         var result = await _context.NewsGroup.AnyAsync(p=>p.Id== id);
         return result;

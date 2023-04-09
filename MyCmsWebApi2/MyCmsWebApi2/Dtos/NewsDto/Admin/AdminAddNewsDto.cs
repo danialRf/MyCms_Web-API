@@ -1,6 +1,6 @@
-﻿namespace MyCmsWebApi2.Dtos
+﻿namespace MyCmsWebApi2.Dtos.NewsDto.Admin
 {
-    public class AddNewsDto
+    public class AdminAddNewsDto
     {
         public int? Id { get; set; }
         public int NewsGroupId { get; set; }
@@ -10,6 +10,6 @@
         public int Visit { get; set; }
         public bool ShowInSlider { get; set; }
         public string Tags { get; set; }
-           
+
     }
 }

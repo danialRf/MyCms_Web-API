@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
-using MyCmsWebApi2.Dtos;
-using MyCmsWebApi2.Dtos.NewsDto;
+using MyCmsWebApi2.Dtos.NewsDto.Admin;
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
 {
@@ -25,7 +24,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ShowNewsDto>>> GetAllNewsAsync()
+        public async Task<ActionResult<IEnumerable<AdminShowNewsDto>>> GetAllNewsAsync()
         {
             try
             {
@@ -35,7 +34,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
                     _logger.LogInformation($"There is not news");
                     return NotFound();
                 }
-                var newsDtos = _mapper.Map<List<ShowNewsDto>>(news);
+                var newsDtos = _mapper.Map<List<AdminShowNewsDto>>(news);
 
                 return Ok(newsDtos);
             }
@@ -48,7 +47,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShowNewsDto>> GetNewsById(int id)
+        public async Task<ActionResult<AdminShowNewsDto>> GetNewsById(int id)
         {
             var result = await _newsRepository.GetNewsByIdAsync(id);
             if (result == null)
@@ -63,7 +62,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddNewsDto>> PostNewNewsAsync([FromBody] AddNewsDto newsDto)
+        public async Task<ActionResult<AdminAddNewsDto>> PostNewNewsAsync([FromBody] AdminAddNewsDto newsDto)
         {
             try
             {
@@ -87,7 +86,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EditNewsDto>> DeleteNews(int id)
+        public async Task<ActionResult> DeleteNews(int id)
         {
             if (await _newsRepository.NewsExist(id) == false)
                 return NotFound();
@@ -100,7 +99,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<EditNewsDto>> UpdateNewsAsync(int id, [FromBody] EditNewsDto newsDto)
+        public async Task<ActionResult<AdminEditNewsDto>> UpdateNewsAsync(int id, [FromBody] AdminEditNewsDto newsDto)
         {
             var existingNews = await _newsRepository.GetNewsByIdAsync(id);
             if (existingNews == null)
@@ -113,7 +112,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
             await _newsRepository.UpdateNewsAsync(updatedNews);
             _logger.LogInformation($"NewsGroup whit id {newsDto.Id} was edited");
-            return Ok(_mapper.Map<EditNewsDto>(updatedNews));
+            return Ok(_mapper.Map<AdminEditNewsDto>(updatedNews));
         }
     }
 }
