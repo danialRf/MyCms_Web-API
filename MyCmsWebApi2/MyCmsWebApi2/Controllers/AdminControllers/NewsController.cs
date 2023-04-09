@@ -13,16 +13,15 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
     public class NewsController : ControllerBase
     {
-
         private readonly INewsRepository _newsRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<NewsController> _logger;
 
         public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger)
         {
-            _newsRepository = newsRepository;
-            _mapper = mapper;
-            _logger = logger;
+            _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -33,15 +32,16 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
                 var news = await _newsRepository.GetAllAsync();
                 if (news == null)
                 {
+                    _logger.LogInformation($"There is not news");
                     return NotFound();
                 }
                 var newsDtos = _mapper.Map<List<ShowNewsDto>>(news);
 
                 return Ok(newsDtos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred during getting all pagesasync");
             }
             
@@ -75,10 +75,13 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
                 var news = _mapper.Map<News>(newsDto);
                 var result = await _newsRepository.InsertNewsAsync(news);
                 newsDto.Id = result.Id;
+
+                _logger.LogInformation($"Create News whit id {newsDto.Id} ");
                 return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
             }
         }
@@ -90,6 +93,8 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
                 return NotFound();
 
             await _newsRepository.DeleteNewsByIdAsync(id);
+
+            _logger.LogInformation($"The News whit ID {id} was Deleted");
             return Accepted();
 
         }
@@ -107,11 +112,8 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
             updatedNews.Id = id;
 
             await _newsRepository.UpdateNewsAsync(updatedNews);
-
+            _logger.LogInformation($"NewsGroup whit id {newsDto.Id} was edited");
             return Ok(_mapper.Map<EditNewsDto>(updatedNews));
         }
-
-
-
     }
 }
