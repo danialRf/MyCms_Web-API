@@ -9,5 +9,5 @@ public class Comments
     public string CommentEmail { get; set; } = String.Empty;
     public string CommentSubject { get; set; } = String.Empty;
     public string CommentText { get; set; } = String.Empty;
-    public DateTime CreateDate { get; set; }= DateTime.Now;
+    public DateTime CreateDate { get; set; } = DateTime.Now;
 }

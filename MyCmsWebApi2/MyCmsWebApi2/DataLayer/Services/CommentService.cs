@@ -36,16 +36,16 @@ namespace MyCmsWebApi2.DataLayer.Services
 
         }
 
-        public async Task UpdateCommentAsync(Comments comment)
-        {
-            _context.Entry(comment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
         public async Task DeleteCommentByIdAsync(int id)
         {
             _context.Remove(new Comments { Id = id });
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> CommentExist(int id)
+        {
+            var result = await _context.Comments.AnyAsync(c => c.Id == id);
+            return result;
         }
     }
 }

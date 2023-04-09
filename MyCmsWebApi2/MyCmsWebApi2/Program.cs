@@ -46,7 +46,7 @@ builder.Services.AddLogging(loggingBuilder =>
 
 
 var app = builder.Build();
-builder.Host.UseSerilog();
+//builder.Host.UseSerilog();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,11 +62,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (IServiceScope scope = app.Services.CreateAsyncScope())
-{
-    var content = scope.ServiceProvider.GetService<CmsDbContext>();
-    await content.Database.MigrateAsync();
-}
+//using (IServiceScope scope = app.Services.CreateAsyncScope())
+//{
+//    var content = scope.ServiceProvider.GetService<CmsDbContext>();
+//    await content.Database.MigrateAsync();
+//}
 
 app.Run();
 

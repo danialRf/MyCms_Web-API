@@ -22,15 +22,15 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
         public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, ILogger<NewsGroupController> logger)
         {
-            _newsGroupRepository = newsGroupRepository;
-            _mapper = mapper;
-            _logger = logger;
+            _newsGroupRepository = newsGroupRepository ?? throw new ArgumentNullException(nameof(newsGroupRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ShowNewsGroupDto>>> GetAllNewsGroupAsync()
         {
-            var newsGroup= await _newsGroupRepository.GetAllAsync();
+            var newsGroup = await _newsGroupRepository.GetAllAsync();
             var result = _mapper.Map<List<ShowNewsGroupDto>>(newsGroup);
 
             return Ok(result);
@@ -41,7 +41,10 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         public async Task<ActionResult<ShowNewsGroupDto>> GetNewsGroupById(int id)
         {
             if (await _newsGroupRepository.NewsGroupExist(id) == false)
+            {
                 return NotFound();
+            }
+                
 
             var result = await _newsGroupRepository.GetNewsGroupByIdAsync(id);
 
@@ -52,24 +55,34 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         [HttpPost]
         public async Task<ActionResult<ShowNewsGroupDto>> PostNewsGroupAsync([FromBody] AddNewsGroupDto newsGroupDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var newsGroup = _mapper.Map<NewsGroup>(newsGroupDto);
             var result = await _newsGroupRepository.InsertNewsGroupAsync(newsGroup);
 
-            _logger.LogInformation($"{newsGroupDto} Create NewsGroup");
+            _logger.LogInformation($"Create NewsGroup whit id {newsGroup.Id} ");
             return CreatedAtAction(nameof(GetNewsGroupById), new { id = newsGroup.Id }, newsGroup);
         }
 
         [HttpPut]
         public async Task<ActionResult> PutPageGroupAsync([FromBody] EditNewsGroupDto newsGroupDto)
         {
-            if (await _newsGroupRepository.NewsGroupExist(newsGroupDto.Id) == false) 
+            if (await _newsGroupRepository.NewsGroupExist(newsGroupDto.Id) == false)
+            {
+                _logger.LogInformation($"GroupTitle '{newsGroupDto.GroupTitle}' Not Found.");
                 return NotFound();
+            }
+
 
             if (newsGroupDto == null)
                 return BadRequest();
 
             var newsGroup = _mapper.Map<NewsGroup>(newsGroupDto);
             var result = _newsGroupRepository.UpdateNewsGroupAsync(newsGroup);
+
+            _logger.LogInformation($"NewsGroup whit id {newsGroupDto.Id} was edited");
             return NoContent();
 
         }
@@ -79,9 +92,14 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         public async Task<ActionResult> DeleteNewsGroupAsync(int id)
         {
             if (await _newsGroupRepository.NewsGroupExist(id) == false)
+            {
                 return NotFound();
+            }
+                
 
             await _newsGroupRepository.DeleteNewsGroupByIdAsync(id);
+
+            _logger.LogInformation($"The NewsGroup whit ID {id} was Deleted");
             return Accepted();
 
         }
