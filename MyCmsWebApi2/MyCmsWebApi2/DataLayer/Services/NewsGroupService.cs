@@ -48,4 +48,13 @@ public class NewsGroupService:INewsGroupRepository
         var result = await _context.NewsGroup.AnyAsync(p=>p.Id== id);
         return result;
     }
+
+    public async Task<NewsGroup> GetGroupByNewsId(int newsId)
+    {
+        var result = await _context.NewsGroup
+                              .Include(g => g.News)
+                              .FirstOrDefaultAsync(g => g.News.Any(n => n.Id == newsId));
+
+        return result;
+    }
 }

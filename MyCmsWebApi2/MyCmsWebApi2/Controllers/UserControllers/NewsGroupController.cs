@@ -42,5 +42,6 @@ namespace MyCmsWebApi2.Controllers.UserControllers
             }
             return Ok(_mapper.Map<UserShowNewsGroupDto>(newsGroup));
         }
+       
     }
 }

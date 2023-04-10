@@ -2,6 +2,7 @@
 using MyCmsWebApi2.DataLayer.Context;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
+using MyCmsWebApi2.BussinessLayer.Convertor;
 
 namespace MyCmsWebApi2.DataLayer.Services
 {
@@ -15,30 +16,30 @@ namespace MyCmsWebApi2.DataLayer.Services
             _context = context;
         }
 
-        public async Task<Images> GetImageByIdAsync(int id)
+        public async Task<Images> GetImageByIdAsync(Guid id)
         {
             return await _context.Images.FirstOrDefaultAsync(p => p.Id == id);
         }
 
 
-        public async Task DeleteImageByIdAsync(int id)
+        public async Task DeleteImageByIdAsync(Guid id)
         {
             _context.Remove(new Images { Id = id });
             await _context.SaveChangesAsync();
         }
 
 
-        public async Task<bool> ImageExist(int id)
+        public async Task<bool> ImageExist(Guid id)
         {
             var result = await _context.Images.AnyAsync(p => p.Id == id);
             return result;
         }
 
-        public async Task<Images> InsertImageAsync(Images images)
+        public async Task<Images> InsertImageAsync(Images image)
         {
-            await _context.AddAsync(images);
+            await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
-            return images;
+            return image;
         }
 
         public async Task UpdateImageAsync(Images images)
@@ -46,5 +47,7 @@ namespace MyCmsWebApi2.DataLayer.Services
             _context.Entry(images).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+  
     }
 }

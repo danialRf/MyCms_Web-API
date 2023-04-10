@@ -4,10 +4,10 @@ namespace MyCmsWebApi2.DataLayer.Repository
 {
     public interface IImageRepository
     {
-        Task<Images> GetImageByIdAsync(int id);
-        Task<Images> InsertImageAsync(Images images);
+        Task<Images> GetImageByIdAsync(Guid id);
+        Task<Images> InsertImageAsync(Images image);
         Task UpdateImageAsync(Images images);
-        Task DeleteImageByIdAsync(int id);
-        Task<bool> ImageExist(int id);
+        Task DeleteImageByIdAsync(Guid id);
+        Task<bool> ImageExist(Guid id);
     }
 }

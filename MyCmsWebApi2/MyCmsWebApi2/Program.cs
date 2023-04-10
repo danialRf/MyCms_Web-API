@@ -59,7 +59,7 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapControllers();
 
 //using (IServiceScope scope = app.Services.CreateAsyncScope())

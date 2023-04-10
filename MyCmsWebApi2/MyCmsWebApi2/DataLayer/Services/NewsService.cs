@@ -54,5 +54,9 @@ public class NewsService:INewsRepository
         var result = await _context.News.AnyAsync(p => p.Id == id);
         return result;
     }
+
+   
+
+    
 }
 

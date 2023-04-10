@@ -11,4 +11,5 @@ public interface INewsRepository
     Task UpdateNewsAsync(News news);
     Task DeleteNewsByIdAsync(int id);
     Task<bool> NewsExist(int id);
+    
 }

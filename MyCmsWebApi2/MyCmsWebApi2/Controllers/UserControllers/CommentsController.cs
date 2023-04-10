@@ -22,14 +22,14 @@ namespace MyCmsWebApi2.Controllers.UserControllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdminShowCommentsDto>>> GetAllCommentsAsync()
+        public async Task<ActionResult<IEnumerable<AdminCommentsDto>>> GetAllCommentsAsync()
         {
             var result = await _commentRepository.GetAllAsync();
             return Ok(result);
         }
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<AdminShowCommentsDto>> GetCommentsByIdAsync(int id)
+        public async Task<ActionResult<AdminCommentsDto>> GetCommentsByIdAsync(int id)
         {
             var result = await _commentRepository.GetCommentByIdAsync(id);
             return Ok(result);

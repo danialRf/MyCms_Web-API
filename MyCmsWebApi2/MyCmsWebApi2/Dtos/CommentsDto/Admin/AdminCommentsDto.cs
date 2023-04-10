@@ -1,6 +1,6 @@
 ﻿namespace MyCmsWebApi2.Dtos.CommentsDto.Admin
 {
-    public class AdminShowCommentsDto
+    public class AdminCommentsDto
     {
 
         public string CommentName { get; set; } = string.Empty;

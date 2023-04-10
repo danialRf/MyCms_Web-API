@@ -10,4 +10,6 @@ public interface INewsGroupRepository
     Task UpdateNewsGroupAsync(NewsGroup newsGroup);
     Task DeleteNewsGroupByIdAsync(int id);
     Task<bool> NewsGroupExistAsync(int id);
+
+    Task<NewsGroup> GetGroupByNewsId(int newsId);
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCmsWebApi2.DataLayer.Model;
 using MyCmsWebApi2.DataLayer.Repository;
+using MyCmsWebApi2.Dtos.CommentsDto.Admin;
 using MyCmsWebApi2.Dtos.NewsDto.Admin;
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
@@ -13,14 +14,18 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
     public class NewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<NewsController> _logger;
+        private readonly INewsGroupRepository _newsGroupRepository;
 
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger)
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _commentRepository = commentRepository;
+            _newsGroupRepository = newsGroupRepository;
         }
 
         [HttpGet]
@@ -60,9 +65,21 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
             }
 
         }
+        [HttpGet("{id}/comments")]
+        public async Task<ActionResult<List<Comments>>> GetCommentsByNewsId(int id)
+        {
+            return await _commentRepository.GetCommentsByNewsId(id);
+        }
+
+        [HttpGet("{id}/newsgroup")]
+        public async Task<ActionResult<NewsGroup>> GetGroupByNewsId(int id)
+        {
+            return await _newsGroupRepository.GetGroupByNewsId(id);
+        }
+
 
         [HttpPost]
-        public async Task<ActionResult<AdminAddNewsDto>> PostNewNewsAsync([FromBody] AdminAddNewsDto newsDto)
+        public async Task<ActionResult<AdminAddNewsDto>> PostNewsAsync([FromBody] AdminAddNewsDto newsDto)
         {
             try
             {

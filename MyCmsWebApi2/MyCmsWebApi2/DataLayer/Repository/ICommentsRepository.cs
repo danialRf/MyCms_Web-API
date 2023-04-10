@@ -10,5 +10,6 @@ namespace MyCmsWebApi2.DataLayer.Repository;
         Task<Comments> InsertCommentAsync(Comments comment);
         Task DeleteCommentByIdAsync(int id);
         Task<bool> CommentExist(int id);
+        Task<List<Comments>> GetCommentsByNewsId(int newsId);
 }
 

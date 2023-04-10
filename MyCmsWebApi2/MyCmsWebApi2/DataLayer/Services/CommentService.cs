@@ -47,5 +47,11 @@ namespace MyCmsWebApi2.DataLayer.Services
             var result = await _context.Comments.AnyAsync(c => c.Id == id);
             return result;
         }
+
+        public async Task<List<Comments>> GetCommentsByNewsId(int newsId)
+        {
+            return await _context.Comments.Where(x=>x.NewsId == newsId).ToListAsync();
+
+        }
     }
 }
