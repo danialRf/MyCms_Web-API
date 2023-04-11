@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCmsWebApi2.DataLayer.Context;
 
@@ -11,9 +12,11 @@ using MyCmsWebApi2.DataLayer.Context;
 namespace MyCmsWebApi2.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    partial class CmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410111858_RelationNewsGroupAndImage")]
+    partial class RelationNewsGroupAndImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,15 +111,16 @@ namespace MyCmsWebApi2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NewsGroupId")
+                    b.Property<int>("NewsGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NewsId")
+                    b.Property<int>("NewsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NewsGroupId");
+                    b.HasIndex("NewsGroupId")
+                        .IsUnique();
 
                     b.HasIndex("NewsId");
 
@@ -202,12 +206,16 @@ namespace MyCmsWebApi2.Migrations
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
                 {
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
-                        .WithMany("Images")
-                        .HasForeignKey("NewsGroupId");
+                        .WithOne("Images")
+                        .HasForeignKey("MyCmsWebApi2.DataLayer.Model.Images", "NewsGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
                         .WithMany("Images")
-                        .HasForeignKey("NewsId");
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("News");
 
@@ -234,7 +242,8 @@ namespace MyCmsWebApi2.Migrations
 
             modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.NewsGroup", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("Images")
+                        .IsRequired();
 
                     b.Navigation("News");
                 });

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCmsWebApi2.DataLayer.Context;
 
@@ -11,9 +12,11 @@ using MyCmsWebApi2.DataLayer.Context;
 namespace MyCmsWebApi2.Migrations
 {
     [DbContext(typeof(CmsDbContext))]
-    partial class CmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410114144_fixingrelationBetweenNewsGroupAndImages")]
+    partial class fixingrelationBetweenNewsGroupAndImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,10 +111,10 @@ namespace MyCmsWebApi2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NewsGroupId")
+                    b.Property<int>("NewsGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NewsId")
+                    b.Property<int>("NewsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -203,11 +206,15 @@ namespace MyCmsWebApi2.Migrations
                 {
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
                         .WithMany("Images")
-                        .HasForeignKey("NewsGroupId");
+                        .HasForeignKey("NewsGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
                         .WithMany("Images")
-                        .HasForeignKey("NewsId");
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("News");
 

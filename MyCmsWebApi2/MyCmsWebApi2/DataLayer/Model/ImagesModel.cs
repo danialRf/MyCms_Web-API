@@ -7,7 +7,7 @@ public class Images
     public string Base64 { get; set; } = string.Empty;
     public DateTime CreateDate { get; set; } = DateTime.Now;
     public virtual News News { get; set; }
-    public int NewsId { get; set; }
-    public int NewsGroupId { get; set; }
+    public int? NewsId { get; set; }
+    public int? NewsGroupId { get; set; }
     public virtual NewsGroup NewsGroup { get; set; }
 }

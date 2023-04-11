@@ -7,11 +7,13 @@ using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.DataLayer.Services;
 using MyCmsWebApi2.Dtos.ImagesDto;
 using MyCmsWebApi2.Dtos.NewsDto;
+using MyCmsWebApi2.Dtos.NewsDto.Admin;
 using MyCmsWebApi2.Dtos.NewsGroupDto;
+
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     public class ImagesController : ControllerBase
     {
@@ -26,16 +28,42 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
         }
 
-        [HttpPost("image")]
-        public async Task<ActionResult> PostImageAsync(IFormFile file)
+
+        #region Get
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AdminShowImagesDto>> GetImageById(Guid id)
         {
-            
-            return Ok(await _imageRepository.InsertImageAsync(new Images
+            if (await _imageRepository.ImageExist(id) == false)
             {
-                ImageName = file.Name,
-                Base64 = file.ImageToBase64()
-            }));
+                return NotFound();
+            }
+            var imageresult = await _imageRepository.GetImageByIdAsync(id);
+
+            var showImagesDto = _mapper.Map<AdminShowImagesDto>(imageresult);
+           
+            
+            return Ok(showImagesDto);
+
+
         }
 
+        #endregion
+
+
+        #region Post
+        [HttpPost]
+        public async Task<IActionResult> PostImageAsync([FromForm] AddImageDto imageDto, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            imageDto.Base64 = file.ImageToBase64();
+            var image = _mapper.Map<Images>(imageDto);
+            var result = await _imageRepository.InsertImageAsync(image);
+
+            return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image);
+        }
+        #endregion
     }
 }

@@ -79,7 +79,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
 
         [HttpPost]
-        public async Task<ActionResult<AdminAddNewsDto>> PostNewsAsync([FromBody] AdminAddNewsDto newsDto)
+        public async Task<IActionResult> PostNewsAsync([FromBody] AdminAddNewsDto newsDto)
         {
             try
             {
