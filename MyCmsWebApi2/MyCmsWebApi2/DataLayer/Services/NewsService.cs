@@ -23,7 +23,8 @@ public class NewsService:INewsRepository
 
     public async Task<News> GetNewsByIdAsync(int id)
     {
-        return await _context.News.FirstOrDefaultAsync(p => p.Id == id);
+        return await _context.News.Include(x=>x.Images)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
     }
 

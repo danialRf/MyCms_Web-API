@@ -2,16 +2,17 @@
 
 namespace MyCmsWebApi2.Dtos.NewsDto.Admin
 {
-    public class AdminShowNewsDto
+    public class AdminNewsDto
     {
         public int Id { get; set; }
         public int NewsGroupId { get; set; }
-        public DateTime DateTime { get; set; } = DateTime.Now;
-        public string Tags { get; set; } = string.Empty; public string Title { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
+        public DateTime CreateDate { get; set; }
+        public string Tags { get; set; }
+        public string Title { get; set; }
+        public string ShortDescription { get; set; } 
+        public string Text { get; set; }
         public int Visit { get; set; }
-
+        public IList<string>? Images { get; set; }
 
     }
 }

@@ -9,6 +9,8 @@ using MyCmsWebApi2.Dtos.ImagesDto;
 using MyCmsWebApi2.Dtos.NewsDto;
 using MyCmsWebApi2.Dtos.NewsDto.Admin;
 using MyCmsWebApi2.Dtos.NewsGroupDto;
+using MyCmsWebApi2.Profiles;
+using System.IO;
 
 
 namespace MyCmsWebApi2.Controllers.AdminControllers
@@ -32,18 +34,23 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         #region Get
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdminShowImagesDto>> GetImageById(Guid id)
+        public async Task<ActionResult> GetImageById(Guid id)
         {
-            if (await _imageRepository.ImageExist(id) == false)
+            var image = await _imageRepository.GetImageByIdAsync(id);
+
+            if (image == null)
             {
                 return NotFound();
             }
-            var imageresult = await _imageRepository.GetImageByIdAsync(id);
 
-            var showImagesDto = _mapper.Map<AdminShowImagesDto>(imageresult);
-           
-            
-            return Ok(showImagesDto);
+            try
+            {
+                return new FileContentResult(Convert.FromBase64String(image.Base64), image.ContentType);
+            }
+            catch (FileNotFoundException)
+            {
+                return NotFound();
+            }
 
 
         }
@@ -53,13 +60,28 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
 
         #region Post
         [HttpPost]
-        public async Task<IActionResult> PostImageAsync([FromForm] AddImageDto imageDto, IFormFile file)
+        public async Task<IActionResult> PostImageAsync([FromForm] AddImageDto imageDto)
         {
-            if (file == null || file.Length == 0)
+            if (imageDto.File == null || imageDto.File.Length == 0)
                 return BadRequest("No file uploaded.");
-
-            imageDto.Base64 = file.ImageToBase64();
-            var image = _mapper.Map<Images>(imageDto);
+            if (imageDto.NewsGroupId==null && imageDto.NewsId == null)
+            {
+                return BadRequest("No Owner Seleted");
+            }     
+            else if (imageDto.NewsGroupId!=null && imageDto.NewsId != null)
+            {
+                return BadRequest("Can't select two owners");
+            }
+            var image = new Images()
+            {
+                Base64 = imageDto.File.ImageToBase64(),
+                CreateDate = DateTime.Now,
+                Id = Guid.NewGuid(),
+                ImageName = imageDto.File.Name,
+                NewsGroupId = imageDto.NewsGroupId,
+                NewsId = imageDto.NewsId,
+                ContentType = imageDto.File.ContentType
+            };
             var result = await _imageRepository.InsertImageAsync(image);
 
             return CreatedAtAction(nameof(GetImageById), new { id = image.Id }, image);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCmsWebApi2.DataLayer.Model;
+using MyCmsWebApi2.DataLayer.QueryFacade;
 using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.Dtos.CommentsDto.Admin;
 using MyCmsWebApi2.Dtos.NewsDto.Admin;
@@ -18,18 +19,19 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         private readonly IMapper _mapper;
         private readonly ILogger<NewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
-
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository)
+        private readonly INewsQueryFacade _newsQueryFacade;
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _commentRepository = commentRepository;
             _newsGroupRepository = newsGroupRepository;
+            _newsQueryFacade = newsQueryFacade;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdminShowNewsDto>>> GetAllNewsAsync()
+        public async Task<ActionResult<IEnumerable<AdminNewsDto>>> GetAllNewsAsync()
         {
             try
             {
@@ -39,7 +41,7 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
                     _logger.LogInformation($"There is not news");
                     return NotFound();
                 }
-                var newsDtos = _mapper.Map<List<AdminShowNewsDto>>(news);
+                var newsDtos = _mapper.Map<List<AdminNewsDto>>(news);
 
                 return Ok(newsDtos);
             }
@@ -52,9 +54,9 @@ namespace MyCmsWebApi2.Controllers.AdminControllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdminShowNewsDto>> GetNewsById(int id)
+        public async Task<ActionResult<AdminNewsDto>> GetNewsById(int id)
         {
-            var result = await _newsRepository.GetNewsByIdAsync(id);
+            var result = await _newsQueryFacade.GetNewsById(id);
             if (result == null)
             {
                 return NotFound();

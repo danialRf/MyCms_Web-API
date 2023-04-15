@@ -13,6 +13,7 @@ public class ImagesMap : IEntityTypeConfiguration<Images>
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Base64).IsRequired();
+        builder.Property(p => p.ContentType).HasMaxLength(256);
 
         builder.Property(p => p.ImageName)
             .IsRequired();

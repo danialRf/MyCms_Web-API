@@ -10,6 +10,9 @@ namespace MyCmsWebApi2.Profiles
         public NewsProfile()
         {
             CreateMap<News, AdminAddNewsDto>();
+            CreateMap<News, AdminNewsDto>()
+                .ForMember(x=>x.Images,opt=>
+                opt.MapFrom(src=>src.Images.Select(x=> "/api/admin/Images/"+x.Id.ToString())));
             CreateMap<AdminEditNewsDto, News>();
             CreateMap<AdminAddNewsDto, News>();
         }

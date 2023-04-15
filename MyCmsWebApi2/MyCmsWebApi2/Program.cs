@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MyCmsWebApi2.Controllers.QueryFacade;
 using MyCmsWebApi2.DataLayer.Context;
+using MyCmsWebApi2.DataLayer.QueryFacade;
 using MyCmsWebApi2.DataLayer.Repository;
 using MyCmsWebApi2.DataLayer.Services;
 using Serilog;
@@ -26,6 +28,7 @@ builder.Services.AddScoped<ICommentRepository,CommentService>();
 builder.Services.AddScoped<IImageRepository, ImageService>();
 builder.Services.AddScoped<INewsRepository,NewsService>();
 builder.Services.AddScoped<INewsGroupRepository, NewsGroupService>();
+builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
 
 
 
