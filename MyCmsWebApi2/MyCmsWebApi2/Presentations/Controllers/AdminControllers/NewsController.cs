@@ -33,7 +33,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         {
             try
             {
-                var news = await _newsRepository.GetAllAsync();
+                var news = await _newsRepository.GetAll();
                 if (news == null)
                 {
                     _logger.LogInformation($"There is not news");
@@ -89,7 +89,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
                 }
 
                 var news = _mapper.Map<News>(newsDto);
-                var result = await _newsRepository.InsertNewsAsync(news);
+                var result = await _newsRepository.Create(news);
 
                 _logger.LogInformation($"Create News whit id {news.Id} ");
                 return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
@@ -104,10 +104,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)
         {
-            if (await _newsRepository.NewsExist(id) == false)
+            if (await _newsRepository.IsExist(id) == false)
                 return NotFound();
 
-            await _newsRepository.DeleteNewsByIdAsync(id);
+            await _newsRepository.Delete(id);
 
             _logger.LogInformation($"The News whit ID {id} was Deleted");
             return Accepted();
@@ -117,7 +117,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpPut("{id}")]
         public async Task<ActionResult<AdminEditNewsDto>> UpdateNewsAsync(int id, [FromBody] AdminEditNewsDto newsDto)
         {
-            var existingNews = await _newsRepository.GetNewsByIdAsync(id);
+            var existingNews = await _newsRepository.GetById(id);
             if (existingNews == null)
             {
                 return NotFound();
@@ -126,7 +126,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             var updatedNews = _mapper.Map<News>(newsDto);
             updatedNews.Id = id;
 
-            await _newsRepository.UpdateNewsAsync(updatedNews);
+            await _newsRepository.Update(updatedNews);
             _logger.LogInformation($"NewsGroup whit id {newsDto.Id} was edited");
             return Ok(_mapper.Map<AdminEditNewsDto>(updatedNews));
         }

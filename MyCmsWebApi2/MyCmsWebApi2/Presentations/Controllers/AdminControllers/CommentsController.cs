@@ -22,10 +22,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Comment>> DeleteCommentsById(int id)
         {
-            if (await _commentRepository.CommentExist(id) == false)
+            if (await _commentRepository.IsExist(id) == false)
                 return NotFound();
 
-            await _commentRepository.DeleteCommentByIdAsync(id);
+            await _commentRepository.Delete(id);
             return Accepted();
 
         }

@@ -39,8 +39,8 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
                 NewsId = request.NewsId,
                 ContentType = request.ImageFile.ContentType
             };
-            var result = await _imageRepository.InsertImageAsync(image);
-            return result.Id;
+            var result = await _imageRepository.Create(image);
+            return result;
         }
     }
 }

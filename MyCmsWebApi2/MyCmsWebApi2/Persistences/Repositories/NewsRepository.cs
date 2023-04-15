@@ -15,12 +15,12 @@ public class NewsRepository : INewsRepository
         _context = context;
     }
 
-    public async Task<List<News>> GetAllAsync()
+    public async Task<IList<News>> GetAll()
     {
         return await _context.News.ToListAsync();
     }
 
-    public async Task<News> GetNewsByIdAsync(int id)
+    public async Task<News> GetById(int id)
     {
         return await _context.News.Include(x => x.Images)
             .FirstOrDefaultAsync(p => p.Id == id);
@@ -29,34 +29,31 @@ public class NewsRepository : INewsRepository
 
 
 
-    public async Task<News> InsertNewsAsync(News news)
+    public async Task<int> Create(News news)
     {
         await _context.AddAsync(news);
         await _context.SaveChangesAsync();
-        return news;
+        return news.Id;
     }
 
-    public async Task UpdateNewsAsync(News news)
+    public async Task<int> Update(News news)
     {
         _context.Entry(news).State = EntityState.Modified;
         await _context.SaveChangesAsync();
+        return news.Id;
     }
 
-    public async Task DeleteNewsByIdAsync(int id)
+    public async Task<int> Delete(int id)
     {
-        //_context.Entry(id).State = EntityState.Deleted;
         _context.Remove(new News { Id = id });
         await _context.SaveChangesAsync();
+        return id;
     }
 
-    public async Task<bool> NewsExist(int id)
+    public async Task<bool> IsExist(int id)
     {
         var result = await _context.News.AnyAsync(p => p.Id == id);
         return result;
     }
-
-
-
-
 }
 

@@ -14,35 +14,34 @@ namespace MyCmsWebApi2.Persistences.Repositories
         public CommentRepository(CmsDbContext context)
         {
             _context = context;
-
-
         }
 
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<IList<Comment>> GetAll()
         {
             return await _context.Comments.ToListAsync();
         }
 
-        public async Task<Comment> GetCommentByIdAsync(int id)
+        public async Task<Comment> GetById(int id)
         {
             return await _context.Comments.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Comment> InsertCommentAsync(Comment comment)
+        public async Task<int> Create(Comment comment)
         {
             await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
-            return comment;
+            return comment.Id;
 
         }
 
-        public async Task DeleteCommentByIdAsync(int id)
+        public async Task<int> Delete(int id)
         {
             _context.Remove(new Comment { Id = id });
             await _context.SaveChangesAsync();
+            return id;
         }
 
-        public async Task<bool> CommentExist(int id)
+        public async Task<bool> IsExist(int id)
         {
             var result = await _context.Comments.AnyAsync(c => c.Id == id);
             return result;
@@ -52,6 +51,11 @@ namespace MyCmsWebApi2.Persistences.Repositories
         {
             return await _context.Comments.Where(x => x.NewsId == newsId).ToListAsync();
 
+        }
+
+        public Task<int> Update(Comment model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

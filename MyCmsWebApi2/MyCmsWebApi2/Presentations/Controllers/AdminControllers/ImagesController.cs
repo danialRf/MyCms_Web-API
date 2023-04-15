@@ -29,7 +29,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetImageById(Guid id)
         {
-            var image = await _imageRepository.GetImageByIdAsync(id);
+            var image = await _imageRepository.GetById(id);
 
             if (image == null)
             {
