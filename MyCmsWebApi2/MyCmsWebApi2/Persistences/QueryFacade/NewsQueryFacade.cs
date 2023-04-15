@@ -20,7 +20,8 @@ namespace MyCmsWebApi2.Persistences.QueryFacade
 
         public async Task<AdminNewsDto> GetNewsById(int id)
         {
-            return await _context.News.Include(x => x.Images)
+            return await _context.News
+                .AsNoTracking().Include(x => x.Images)
                 .ProjectTo<AdminNewsDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
 
         }

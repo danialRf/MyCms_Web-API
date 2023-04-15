@@ -22,7 +22,7 @@ public class NewsRepository : INewsRepository
 
     public async Task<News> GetById(int id)
     {
-        return await _context.News.Include(x => x.Images)
+        return await _context.News
             .FirstOrDefaultAsync(p => p.Id == id);
 
     }
@@ -38,7 +38,7 @@ public class NewsRepository : INewsRepository
 
     public async Task<int> Update(News news)
     {
-        _context.Entry(news).State = EntityState.Modified;
+        _context.Update(news);
         await _context.SaveChangesAsync();
         return news.Id;
     }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MyCmsWebApi2.Applications.Notifications;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
@@ -18,7 +20,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly ILogger<NewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
+        private readonly IMediator _mediator;
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -26,6 +29,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _commentRepository = commentRepository;
             _newsGroupRepository = newsGroupRepository;
             _newsQueryFacade = newsQueryFacade;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -59,10 +63,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             {
                 return NotFound();
             }
-            else
-            {
-                return Ok(result);
-            }
+            await _mediator.Publish(new AddNewsVisitNotification() {NewsId = id });
+            return Ok(result);
 
         }
         [HttpGet("{id}/comments")]

@@ -11,9 +11,14 @@ public class News
     public int Visit { get; set; }
     public bool ShowInSlider { get; set; }
     public DateTime CreateDate { get; set; } = DateTime.Now;
+    public DateTime? LastVisit { get; set; }
     public string Tags { get; set; } = string.Empty;
     public virtual ICollection<Image> Images { get; set; }
     public virtual ICollection<Comment> Comments { get; set; }
-
+    public void Visited()
+    {
+        Visit++;
+        LastVisit = DateTime.Now;
+    }
 
 }
