@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyCmsWebApi2.Applications.Commands;
+using MyCmsWebApi2.Applications.Commands.Images;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Presentations.Dtos.ImagesDto.User;

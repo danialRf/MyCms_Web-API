@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace MyCmsWebApi2.Applications.Commands
+namespace MyCmsWebApi2.Applications.Commands.Images
 {
     public class AddImageCommand : IRequest<Guid>
     {

@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using MyCmsWebApi2.Applications.Commands;
+using MyCmsWebApi2.Applications.Commands.Images;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Convertor;
 using MyCmsWebApi2.Infrastructure.Exceptions.BaseException;
 
-namespace MyCmsWebApi2.Applications.Handlers
+namespace MyCmsWebApi2.Applications.Handlers.Images
 {
     public class AddImageHandler : IRequestHandler<AddImageCommand, Guid>
     {
