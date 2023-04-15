@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.Applications.Repository;
+using MyCmsWebApi2.Infrastructure.Middlewares;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Persistences.QueryFacade;
 using MyCmsWebApi2.Persistences.Repositories;
@@ -61,7 +62,7 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ApiExceptionHandlingMiddleware>();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();

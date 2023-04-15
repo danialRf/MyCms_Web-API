@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Commands;
 using MyCmsWebApi2.Applications.Repository;
+using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Presentations.Dtos.ImagesDto.User;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
@@ -52,11 +53,12 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         #region Post
         [HttpPost]
+        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddImage([FromForm] AddImageDto imageDto)
         {
             var command = _mapper.Map<AddImageCommand>(imageDto);
             var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetImageById), new { id = result.ToString() }, imageDto.ImageFile);
+            return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
         }
         #endregion
     }
