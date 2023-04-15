@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using MyCmsWebApi2.Controllers.QueryFacade;
-using MyCmsWebApi2.DataLayer.Context;
-using MyCmsWebApi2.DataLayer.QueryFacade;
-using MyCmsWebApi2.DataLayer.Repository;
-using MyCmsWebApi2.DataLayer.Services;
+using MyCmsWebApi2.Applications.Repository;
+using MyCmsWebApi2.Persistences.EF;
+using MyCmsWebApi2.Persistences.QueryFacade;
+using MyCmsWebApi2.Persistences.Repositories;
+using MyCmsWebApi2.Presentations.QueryFacade;
 using Serilog;
-using System.Configuration;
+using System.Reflection;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -24,9 +24,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<ICommentRepository,CommentService>();
+builder.Services.AddScoped<ICommentRepository, CommentService>();
 builder.Services.AddScoped<IImageRepository, ImageService>();
-builder.Services.AddScoped<INewsRepository,NewsService>();
+builder.Services.AddScoped<INewsRepository, NewsService>();
 builder.Services.AddScoped<INewsGroupRepository, NewsGroupService>();
 builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
 
@@ -40,6 +40,7 @@ var configuration = configurationBuilder.Build();
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<CmsDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 builder.Services.AddLogging(loggingBuilder =>
 {

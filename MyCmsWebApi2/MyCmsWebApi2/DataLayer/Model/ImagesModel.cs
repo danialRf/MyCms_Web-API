@@ -11,4 +11,5 @@ public class Images
     public int? NewsId { get; set; }
     public int? NewsGroupId { get; set; }
     public virtual NewsGroup NewsGroup { get; set; }
+
 }

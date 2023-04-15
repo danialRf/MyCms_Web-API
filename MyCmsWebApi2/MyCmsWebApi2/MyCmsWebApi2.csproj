@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
@@ -26,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\CommentsDto\Users\" />
-    <Folder Include="Dtos\NewsDto\Users\" />
+    <Folder Include="Presentations\Dtos\CommentsDto\Users\" />
+    <Folder Include="Presentations\Dtos\NewsDto\Users\" />
   </ItemGroup>
 
 </Project>
