@@ -12,9 +12,8 @@ public class News
     public bool ShowInSlider { get; set; }
     public DateTime CreateDate { get; set; } = DateTime.Now;
     public string Tags { get; set; } = string.Empty;
-    // public  int ImagesId { get; set; }
-    public virtual ICollection<Images> Images { get; set; }
-    public virtual ICollection<Comments> Comments { get; set; }
+    public virtual ICollection<Image> Images { get; set; }
+    public virtual ICollection<Comment> Comments { get; set; }
 
 
 }

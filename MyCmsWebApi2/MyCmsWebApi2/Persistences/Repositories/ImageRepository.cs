@@ -5,17 +5,17 @@ using MyCmsWebApi2.Persistences.EF;
 
 namespace MyCmsWebApi2.Persistences.Repositories
 {
-    public class ImageService : IImageRepository
+    public class ImageRepository : IImageRepository
     {
 
         private readonly CmsDbContext _context;
 
-        public ImageService(CmsDbContext context)
+        public ImageRepository(CmsDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Images> GetImageByIdAsync(Guid id)
+        public async Task<Image> GetImageByIdAsync(Guid id)
         {
             return await _context.Images.FirstOrDefaultAsync(p => p.Id == id);
         }
@@ -23,7 +23,7 @@ namespace MyCmsWebApi2.Persistences.Repositories
 
         public async Task DeleteImageByIdAsync(Guid id)
         {
-            _context.Remove(new Images { Id = id });
+            _context.Remove(new Image { Id = id });
             await _context.SaveChangesAsync();
         }
 
@@ -34,14 +34,14 @@ namespace MyCmsWebApi2.Persistences.Repositories
             return result;
         }
 
-        public async Task<Images> InsertImageAsync(Images image)
+        public async Task<Image> InsertImageAsync(Image image)
         {
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
             return image;
         }
 
-        public async Task UpdateImageAsync(Images images)
+        public async Task UpdateImageAsync(Image images)
         {
             _context.Entry(images).State = EntityState.Modified;
             await _context.SaveChangesAsync();

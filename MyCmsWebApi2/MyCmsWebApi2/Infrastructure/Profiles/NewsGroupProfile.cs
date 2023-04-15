@@ -9,10 +9,10 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
     {
         public NewsGroupProfile()
         {
-            CreateMap<NewsGroup, AdminShowNewsGroupDto>();
+            CreateMap<NewsGroup, AdminNewsGroupDto>();
             CreateMap<AdminAddNewsGroupDto, NewsGroup>();
             CreateMap<AdminEditNewsGroupDto, NewsGroup>();
-            CreateMap<NewsGroup, UserShowNewsGroupDto>();
+            CreateMap<NewsGroup, UserNewsGroupDto>();
 
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace MyCmsWebApi2.Domain.Entities;
 
-public class Images
+public class Image
 {
     public Guid Id { get; set; }
     public string ImageName { get; set; } = string.Empty;

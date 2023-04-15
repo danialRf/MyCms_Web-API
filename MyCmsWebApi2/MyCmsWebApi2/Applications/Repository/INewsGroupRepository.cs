@@ -1,15 +1,9 @@
 ﻿using MyCmsWebApi2.Domain.Entities;
+using MyCmsWebApi2.Infrastructure;
 
 namespace MyCmsWebApi2.Applications.Repository;
 
-public interface INewsGroupRepository
+public interface INewsGroupRepository : IRepository<NewsGroup,int>
 {
-    Task<List<NewsGroup>> GetAllAsync();
-    Task<NewsGroup> GetNewsGroupByIdAsync(int id);
-    Task<NewsGroup> InsertNewsGroupAsync(NewsGroup newsGroup);
-    Task UpdateNewsGroupAsync(NewsGroup newsGroup);
-    Task DeleteNewsGroupByIdAsync(int id);
-    Task<bool> NewsGroupExistAsync(int id);
-
     Task<NewsGroup> GetGroupByNewsId(int newsId);
 }

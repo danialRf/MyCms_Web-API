@@ -20,7 +20,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Comments>> DeleteCommentsById(int id)
+        public async Task<ActionResult<Comment>> DeleteCommentsById(int id)
         {
             if (await _commentRepository.CommentExist(id) == false)
                 return NotFound();

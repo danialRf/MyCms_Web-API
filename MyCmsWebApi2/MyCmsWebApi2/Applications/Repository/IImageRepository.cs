@@ -4,9 +4,9 @@ namespace MyCmsWebApi2.Applications.Repository
 {
     public interface IImageRepository
     {
-        Task<Images> GetImageByIdAsync(Guid id);
-        Task<Images> InsertImageAsync(Images image);
-        Task UpdateImageAsync(Images images);
+        Task<Image> GetImageByIdAsync(Guid id);
+        Task<Image> InsertImageAsync(Image image);
+        Task UpdateImageAsync(Image images);
         Task DeleteImageByIdAsync(Guid id);
         Task<bool> ImageExist(Guid id);
     }

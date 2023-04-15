@@ -66,7 +66,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
         [HttpGet("{id}/comments")]
-        public async Task<ActionResult<List<Comments>>> GetCommentsByNewsId(int id)
+        public async Task<ActionResult<List<Comment>>> GetCommentsByNewsId(int id)
         {
             return await _commentRepository.GetCommentsByNewsId(id);
         }
@@ -90,9 +90,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
                 var news = _mapper.Map<News>(newsDto);
                 var result = await _newsRepository.InsertNewsAsync(news);
-                newsDto.Id = result.Id;
 
-                _logger.LogInformation($"Create News whit id {newsDto.Id} ");
+                _logger.LogInformation($"Create News whit id {news.Id} ");
                 return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
             }
             catch (Exception ex)

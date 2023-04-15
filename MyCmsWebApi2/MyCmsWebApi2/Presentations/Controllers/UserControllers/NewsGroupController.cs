@@ -21,25 +21,25 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserShowNewsGroupDto>>> GetAllNewsGroupAsync()
+        public async Task<ActionResult<IEnumerable<UserNewsGroupDto>>> GetAllNewsGroupAsync()
         {
-            var newsGroup = await _newsGroupRepository.GetAllAsync();
+            var newsGroup = await _newsGroupRepository.GetAll();
             if (newsGroup == null)
             {
                 _logger.LogInformation($"There is not newsGroup");
                 return NotFound();
             }
-            return Ok(_mapper.Map<List<UserShowNewsGroupDto>>(newsGroup));
+            return Ok(_mapper.Map<List<UserNewsGroupDto>>(newsGroup));
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserShowNewsGroupDto>> GetNewsGroupByIdAsync(int id)
+        public async Task<ActionResult<UserNewsGroupDto>> GetNewsGroupByIdAsync(int id)
         {
-            var newsGroup = await _newsGroupRepository.GetNewsGroupByIdAsync(id);
+            var newsGroup = await _newsGroupRepository.GetById(id);
             if (newsGroup == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<UserShowNewsGroupDto>(newsGroup));
+            return Ok(_mapper.Map<UserNewsGroupDto>(newsGroup));
         }
 
     }

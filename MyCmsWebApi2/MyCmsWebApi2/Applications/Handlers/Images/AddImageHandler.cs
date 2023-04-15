@@ -29,7 +29,7 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
                 throw new PhoenixGeneralException("حاجی یدونه انتخاب کن لطفا");
             }
 
-            var image = new Images()
+            var image = new Image()
             {
                 Base64 = request.ImageFile.ImageToBase64(),
                 CreateDate = DateTime.Now,

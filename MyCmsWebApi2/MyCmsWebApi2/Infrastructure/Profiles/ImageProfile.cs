@@ -10,7 +10,7 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
     {
         public ImageProfile()
         {
-            CreateMap<Images, AdminShowImagesDto>();
+            CreateMap<Image, AdminShowImagesDto>();
             CreateMap<AddImageDto, AddImageCommand>();
         }
     }

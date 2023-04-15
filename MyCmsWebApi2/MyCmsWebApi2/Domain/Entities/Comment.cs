@@ -1,6 +1,6 @@
 ﻿namespace MyCmsWebApi2.Domain.Entities;
 
-public class Comments
+public class Comment
 {
     public int Id { get; set; }
     public int NewsId { get; set; }

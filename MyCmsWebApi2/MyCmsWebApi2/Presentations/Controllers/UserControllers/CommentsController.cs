@@ -25,6 +25,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
         public async Task<ActionResult<AdminCommentsDto>> GetCommentsByIdAsync(int id)
         {
             var result = await _commentRepository.GetCommentByIdAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
             return Ok(result);
         }
 

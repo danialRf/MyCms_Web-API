@@ -5,11 +5,11 @@ namespace MyCmsWebApi2.Applications.Repository;
 
 public interface ICommentRepository
 {
-    Task<List<Comments>> GetAllAsync();
-    Task<Comments> GetCommentByIdAsync(int id);
-    Task<Comments> InsertCommentAsync(Comments comment);
+    Task<List<Comment>> GetAllAsync();
+    Task<Comment> GetCommentByIdAsync(int id);
+    Task<Comment> InsertCommentAsync(Comment comment);
     Task DeleteCommentByIdAsync(int id);
     Task<bool> CommentExist(int id);
-    Task<List<Comments>> GetCommentsByNewsId(int newsId);
+    Task<List<Comment>> GetCommentsByNewsId(int newsId);
 }
 

@@ -4,9 +4,9 @@ using MyCmsWebApi2.Domain.Entities;
 
 namespace MyCmsWebApi2.Persistences.EF.ModelMap;
 
-public class ImagesMap : IEntityTypeConfiguration<Images>
+public class ImagesMap : IEntityTypeConfiguration<Image>
 {
-    public void Configure(EntityTypeBuilder<Images> builder)
+    public void Configure(EntityTypeBuilder<Image> builder)
     {
         builder.ToTable("Images");
 

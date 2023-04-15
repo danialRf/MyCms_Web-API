@@ -25,10 +25,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<ICommentRepository, CommentService>();
-builder.Services.AddScoped<IImageRepository, ImageService>();
-builder.Services.AddScoped<INewsRepository, NewsService>();
-builder.Services.AddScoped<INewsGroupRepository, NewsGroupService>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<INewsRepository, NewsRepository>();
+builder.Services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
 builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
 
 

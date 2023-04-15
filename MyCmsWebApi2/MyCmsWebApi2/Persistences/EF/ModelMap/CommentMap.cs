@@ -4,9 +4,9 @@ using MyCmsWebApi2.Domain.Entities;
 
 namespace MyCmsWebApi2.Persistences.EF.ModelMap;
 
-public class CommentMap : IEntityTypeConfiguration<Comments>
+public class CommentMap : IEntityTypeConfiguration<Comment>
 {
-    public void Configure(EntityTypeBuilder<Comments> builder)
+    public void Configure(EntityTypeBuilder<Comment> builder)
     {
         builder.ToTable("Comments");
 

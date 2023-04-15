@@ -12,8 +12,8 @@ namespace MyCmsWebApi2.Persistences.EF
         }
 
         public DbSet<AdminLogIn> AdminLogin { get; set; }
-        public DbSet<Comments> Comments { get; set; }
-        public DbSet<Images> Images { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DbSet<NewsGroup> NewsGroup { get; set; }
         public DbSet<News> News { get; set; }
 

@@ -6,5 +6,5 @@ public class NewsGroup
     public string GroupTitle { get; set; } = string.Empty;
     public virtual ICollection<News> News { get; set; }
 
-    public virtual ICollection<Images> Images { get; set; }
+    public virtual ICollection<Image> Images { get; set; }
 }

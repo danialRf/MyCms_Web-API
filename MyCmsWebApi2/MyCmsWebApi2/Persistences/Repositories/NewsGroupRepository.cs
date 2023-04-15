@@ -5,45 +5,47 @@ using MyCmsWebApi2.Persistences.EF;
 
 namespace MyCmsWebApi2.Persistences.Repositories;
 
-public class NewsGroupService : INewsGroupRepository
+public class NewsGroupRepository : INewsGroupRepository
 {
     private readonly CmsDbContext _context;
 
-    public NewsGroupService(CmsDbContext context)
+    public NewsGroupRepository(CmsDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<NewsGroup>> GetAllAsync()
+    public async Task<IList<NewsGroup>> GetAll()
     {
         return await _context.NewsGroup.ToListAsync();
     }
 
-    public async Task<NewsGroup> GetNewsGroupByIdAsync(int id)
+    public async Task<NewsGroup> GetById(int id)
     {
         return await _context.NewsGroup.FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task<NewsGroup> InsertNewsGroupAsync(NewsGroup newsGroup)
+    public async Task<int> Create(NewsGroup newsGroup)
     {
         await _context.AddAsync(newsGroup);
         await _context.SaveChangesAsync();
-        return newsGroup;
+        return newsGroup.Id;
     }
 
-    public async Task UpdateNewsGroupAsync(NewsGroup newsGroup)
+    public async Task<int> Update(NewsGroup newsGroup)
     {
         _context.Entry(newsGroup).State = EntityState.Modified;
         await _context.SaveChangesAsync();
+        return newsGroup.Id;
     }
 
-    public async Task DeleteNewsGroupByIdAsync(int id)
+    public async Task<int> Delete(int id)
     {
         _context.Remove(new NewsGroup { Id = id });
         await _context.SaveChangesAsync();
+        return id;
     }
 
-    public async Task<bool> NewsGroupExistAsync(int id)
+    public async Task<bool> IsExist(int id)
     {
         var result = await _context.NewsGroup.AnyAsync(p => p.Id == id);
         return result;

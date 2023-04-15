@@ -8,8 +8,8 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
     {
         public CommentsProfile()
         {
-            CreateMap<Comments, AdminCommentsDto>();
-            CreateMap<AdminAddCommentsDto, Comments>();
+            CreateMap<Comment, AdminCommentsDto>();
+            CreateMap<AdminAddCommentsDto, Comment>();
 
         }
     }

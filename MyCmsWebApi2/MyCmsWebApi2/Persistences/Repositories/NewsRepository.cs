@@ -5,12 +5,12 @@ using MyCmsWebApi2.Persistences.EF;
 
 namespace MyCmsWebApi2.Persistences.Repositories;
 
-public class NewsService : INewsRepository
+public class NewsRepository : INewsRepository
 {
     private readonly CmsDbContext _context;
 
 
-    public NewsService(CmsDbContext context)
+    public NewsRepository(CmsDbContext context)
     {
         _context = context;
     }
