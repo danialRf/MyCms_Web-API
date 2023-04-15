@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MyCmsWebApi2.Applications.Commands;
 using MyCmsWebApi2.Applications.Repository;
-using MyCmsWebApi2.DataLayer.Model;
+using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Convertor;
 
 namespace MyCmsWebApi2.Applications.Handlers

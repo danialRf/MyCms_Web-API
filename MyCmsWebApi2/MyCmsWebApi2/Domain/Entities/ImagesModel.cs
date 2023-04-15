@@ -1,4 +1,4 @@
-﻿namespace MyCmsWebApi2.DataLayer.Model;
+﻿namespace MyCmsWebApi2.Domain.Entities;
 
 public class Images
 {

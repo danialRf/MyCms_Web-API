@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MyCmsWebApi2.Applications.Commands;
-using MyCmsWebApi2.DataLayer.Model;
+using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.ImagesDto.User;
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MyCmsWebApi2.DataLayer.Model;
+using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Users;
 

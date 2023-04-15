@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyCmsWebApi2.DataLayer.Model;
-
+using MyCmsWebApi2.Domain.Entities;
 
 namespace MyCmsWebApi2.Persistences.EF
 {
