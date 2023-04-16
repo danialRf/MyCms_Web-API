@@ -22,9 +22,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository,
-            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
+            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade,IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
