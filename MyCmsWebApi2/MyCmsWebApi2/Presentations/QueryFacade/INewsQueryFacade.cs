@@ -1,9 +1,11 @@
-﻿using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
+﻿using MyCmsWebApi2.Presentations.Dtos.NewsDto;
+
 
 namespace MyCmsWebApi2.Presentations.QueryFacade
 {
     public interface INewsQueryFacade
     {
-        Task<AdminNewsDto> GetNewsById(int id);
+        Task<NewsDto> GetNewsById(int id);
+       Task<IEnumerable<NewsDto>> GetAllNews();
     }
 }

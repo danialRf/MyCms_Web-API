@@ -19,14 +19,14 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
         public async Task<Guid> Handle(AddImageCommand request, CancellationToken cancellationToken)
         {
             if (request.ImageFile == null || request.ImageFile.Length == 0)
-                throw new PhoenixGeneralException("حاجی یه عکسی انتخاب کن لطفا");
+                throw new PhoenixGeneralException("حاجی یه عکسی انتخاب کن ناموصا");
             if (request.NewsGroupId == null && request.NewsId == null)
             {
-                throw new PhoenixGeneralException("حاجی یه خبر یا گروه انتخاب کن لطفا");
+                throw new PhoenixGeneralException("حاجی یه خبر یا گروه انتخاب کن ناموصا");
             }
             else if (request.NewsGroupId != null && request.NewsId != null)
             {
-                throw new PhoenixGeneralException("حاجی یدونه انتخاب کن لطفا");
+                throw new PhoenixGeneralException("حاجی یدونه انتخاب کن ناموصا");
             }
 
             var image = new Image()

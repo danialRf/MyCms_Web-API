@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Commands.Images;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Infrastructure.Extensions;
-using MyCmsWebApi2.Presentations.Dtos.ImagesDto.User;
+using MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -61,5 +62,24 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
         }
         #endregion
+
+        #region Update
+        [HttpPut]
+        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status200OK)]
+
+        public async Task<IActionResult> UpdateImage([FromForm] EditImageDto editImage)
+        {
+           
+            var command = _mapper.Map<EditImageCommand>(editImage);
+            var result = await _mediator.Send(command);
+            return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
+        }
+
     }
+
+
+
+
+
+    #endregion
 }

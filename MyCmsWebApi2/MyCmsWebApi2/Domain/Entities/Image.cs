@@ -11,5 +11,9 @@ public class Image
     public int? NewsId { get; set; }
     public int? NewsGroupId { get; set; }
     public virtual NewsGroup NewsGroup { get; set; }
+    public void Update(string base64)
+    {
+        Base64 = base64;
+    }
 
 }

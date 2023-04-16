@@ -1,4 +1,5 @@
-﻿namespace MyCmsWebApi2.Presentations.Dtos.ImagesDto.User
+﻿namespace MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin
+
 {
     public class AddImageDto
     {

@@ -15,5 +15,17 @@ public class News
     public virtual ICollection<Image> Images { get; set; }
     public virtual ICollection<Comment> Comments { get; set; }
 
+    public void UpdateNews(int id, int newsGroupId, string title, string shortDescription, string text, bool showInSlider, string tags)
+    {
+        id = Id;
+        newsGroupId = NewsGroupId;
+        Title = title;
+        ShortDescription = shortDescription;
+        Text = text;
+        ShowInSlider = showInSlider;
+        Tags = tags;
+
+    }
+
 
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
+using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.QueryFacade;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
@@ -18,7 +19,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly ILogger<NewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository,
+            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -28,31 +30,33 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _newsQueryFacade = newsQueryFacade;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdminNewsDto>>> GetAllNewsAsync()
-        {
-            try
-            {
-                var news = await _newsRepository.GetAll();
-                if (news == null)
-                {
-                    _logger.LogInformation($"There is not news");
-                    return NotFound();
-                }
-                var newsDtos = _mapper.Map<List<AdminNewsDto>>(news);
+        #region Get
 
-                return Ok(newsDtos);
-            }
-            catch (Exception ex)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<NewsDto>>> GetAllNewsAsync()
+        {
+            //try
+            //{
+            var news = await _newsQueryFacade.GetAllNews();
+            if (news == null)
             {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred during getting all pagesasync");
+                _logger.LogInformation($"There is not news");
+                return NotFound();
             }
+            var newsDtos = _mapper.Map<List<NewsDto>>(news);
+
+            return Ok(newsDtos);
+            //}
+            // catch (Exception ex)
+            //{
+            //  _logger.LogError(ex.Message);
+            //return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred .... getting all News");
+            //}
 
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdminNewsDto>> GetNewsById(int id)
+        public async Task<ActionResult<NewsDto>> GetNewsById(int id)
         {
             var result = await _newsQueryFacade.GetNewsById(id);
             if (result == null)
@@ -77,6 +81,9 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return await _newsGroupRepository.GetGroupByNewsId(id);
         }
 
+        #endregion
+
+        #region Post
 
         [HttpPost]
         public async Task<IActionResult> PostNewsAsync([FromBody] AdminAddNewsDto newsDto)
@@ -101,6 +108,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             }
         }
 
+        #endregion
+
+        #region Delete
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)
         {
@@ -114,21 +125,26 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
+        #endregion
+
+        #region Update
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<AdminEditNewsDto>> UpdateNewsAsync(int id, [FromBody] AdminEditNewsDto newsDto)
+        public async Task<ActionResult> UpdateNewsAsync(int id, [FromBody] AdminEditNewsDto newsDto)
         {
             var existingNews = await _newsRepository.GetById(id);
             if (existingNews == null)
             {
                 return NotFound();
             }
+            existingNews.UpdateNews(id, newsDto.Id, newsDto.Title, newsDto.ShortDescription, newsDto.Text, newsDto.ShowInSlider, newsDto.Tags);
 
-            var updatedNews = _mapper.Map<News>(newsDto);
-            updatedNews.Id = id;
+            await _newsRepository.Update(existingNews);
+            _logger.LogInformation($"NewsGroup whit id {id} was edited");
+            return Ok();
 
-            await _newsRepository.Update(updatedNews);
-            _logger.LogInformation($"NewsGroup whit id {newsDto.Id} was edited");
-            return Ok(_mapper.Map<AdminEditNewsDto>(updatedNews));
+
+            #endregion
         }
     }
 }

@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Folder Include="Presentations\Dtos\CommentsDto\Users\" />
-    <Folder Include="Presentations\Dtos\NewsDto\Users\" />
+    <Folder Include="Presentations\Dtos\ImagesDto\User\" />
   </ItemGroup>
 
 </Project>

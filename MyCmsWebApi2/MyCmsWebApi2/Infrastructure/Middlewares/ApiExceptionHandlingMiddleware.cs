@@ -10,11 +10,7 @@ namespace MyCmsWebApi2.Infrastructure.Middlewares
 
         private readonly IHostEnvironment _hostEnvironment;
 
-        public ApiExceptionHandlingMiddleware(
-            RequestDelegate next,
-
-            IHostEnvironment hostEnvironment
-        )
+        public ApiExceptionHandlingMiddleware(RequestDelegate next,IHostEnvironment hostEnvironment )
         {
             _next = next;
             _hostEnvironment = hostEnvironment;

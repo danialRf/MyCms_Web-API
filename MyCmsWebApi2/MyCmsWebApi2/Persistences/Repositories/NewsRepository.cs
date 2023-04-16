@@ -45,9 +45,13 @@ public class NewsRepository : INewsRepository
 
     public async Task<int> Delete(int id)
     {
-        _context.Remove(new News { Id = id });
-        await _context.SaveChangesAsync();
-        return id;
+        var news = await _context.News.Include(n => n.Images).FirstOrDefaultAsync(n => n.Id == id);
+      
+            _context.Images.RemoveRange(news.Images);
+            _context.News.Remove(news);
+            await _context.SaveChangesAsync();
+            return id;
+        
     }
 
     public async Task<bool> IsExist(int id)
