@@ -4,7 +4,7 @@ public class Image
 {
     public Guid Id { get; set; }
     public string ImageName { get; set; } = string.Empty;
-    public string Base64 { get; set; } = string.Empty;
+    public string Base64 { get; set; }
     public DateTime CreateDate { get; set; } = DateTime.Now;
     public string ContentType { get; set; }
     public virtual News News { get; set; }

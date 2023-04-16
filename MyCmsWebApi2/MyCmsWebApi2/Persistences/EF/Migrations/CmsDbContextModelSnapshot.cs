@@ -22,7 +22,7 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.AdminLogIn", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.AdminLogIn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.ToTable("AdminLogin", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Comments", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.ToTable("Comments", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.Image", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,7 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.ToTable("Images", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.News", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,6 +137,9 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastVisit")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("NewsGroupId")
@@ -175,7 +178,7 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.ToTable("News", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.NewsGroup", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.NewsGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -193,9 +196,9 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.ToTable("NewsGroup", (string)null);
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Comments", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.Comment", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
+                    b.HasOne("MyCmsWebApi2.Domain.Entities.News", "News")
                         .WithMany("Comments")
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -204,13 +207,13 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.Navigation("News");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.Images", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.Image", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
+                    b.HasOne("MyCmsWebApi2.Domain.Entities.NewsGroup", "NewsGroup")
                         .WithMany("Images")
                         .HasForeignKey("NewsGroupId");
 
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.News", "News")
+                    b.HasOne("MyCmsWebApi2.Domain.Entities.News", "News")
                         .WithMany("Images")
                         .HasForeignKey("NewsId");
 
@@ -219,9 +222,9 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.Navigation("NewsGroup");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.News", b =>
                 {
-                    b.HasOne("MyCmsWebApi2.DataLayer.Model.NewsGroup", "NewsGroup")
+                    b.HasOne("MyCmsWebApi2.Domain.Entities.NewsGroup", "NewsGroup")
                         .WithMany("News")
                         .HasForeignKey("NewsGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -230,14 +233,14 @@ namespace MyCmsWebApi2.Persistences.EF.Migrations
                     b.Navigation("NewsGroup");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.News", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.News", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("MyCmsWebApi2.DataLayer.Model.NewsGroup", b =>
+            modelBuilder.Entity("MyCmsWebApi2.Domain.Entities.NewsGroup", b =>
                 {
                     b.Navigation("Images");
 
