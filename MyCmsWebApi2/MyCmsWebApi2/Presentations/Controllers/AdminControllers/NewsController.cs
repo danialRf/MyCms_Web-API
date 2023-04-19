@@ -7,6 +7,7 @@ using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.QueryFacade;
+using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -22,8 +23,9 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
+        private readonly ICommentQueryFacade _commentQueryFacade;
         public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository,
-            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade,IMediator mediator)
+            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator, ICommentQueryFacade commentQueryFacade)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -32,63 +34,56 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _newsGroupRepository = newsGroupRepository;
             _newsQueryFacade = newsQueryFacade;
             _mediator = mediator;
+            _commentQueryFacade = commentQueryFacade;
         }
 
-        #region Get
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsDto>>> GetAllNewsAsync()
+        public async Task<ActionResult<IEnumerable<AdminNewsDto>>> GetAllNews()
         {
-            //try
-            //{
-            var news = await _newsQueryFacade.GetAllNews();
+
+            var news = await _newsQueryFacade.AdminGetAllNews();
             if (news == null)
             {
                 _logger.LogInformation($"There is not news");
                 return NotFound();
             }
-            var newsDtos = _mapper.Map<List<NewsDto>>(news);
+            var newsDto = _mapper.Map<List<AdminNewsDto>>(news);
 
-            return Ok(newsDtos);
-            //}
-            // catch (Exception ex)
-            //{
-            //  _logger.LogError(ex.Message);
-            //return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred .... getting all News");
-            //}
+            return Ok(newsDto);
+
+
 
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<NewsDto>> GetNewsById(int id)
+        public async Task<ActionResult<AdminNewsDto>> GetNewsById(int id)
         {
-            var result = await _newsQueryFacade.GetNewsById(id);
+            var result = await _newsQueryFacade.AdminGetNewsById(id);
             if (result == null)
             {
                 return NotFound();
             }
-            await _mediator.Publish(new AddNewsVisitNotification() {NewsId = id });
+            await _mediator.Publish(new AddNewsVisitNotification() { NewsId = id });
             return Ok(result);
 
         }
+
         [HttpGet("{id}/comments")]
-        public async Task<ActionResult<List<Comment>>> GetCommentsByNewsId(int id)
+        public async Task<ActionResult<List<AdminCommentsDto>>> GetCommentsByNewsId(int id)
         {
-            return await _commentRepository.GetCommentsByNewsId(id);
+            var comment = await _commentQueryFacade.AdminGetCommentByNewsId(id);
+            return Ok(comment);
         }
 
         [HttpGet("{id}/newsgroup")]
-        public async Task<ActionResult<NewsGroup>> GetGroupByNewsId(int id)
+        public async Task<ActionResult<AdminNewsDto>> GetNewsByGroupIdAsync(int id)
         {
-            return await _newsGroupRepository.GetGroupByNewsId(id);
+            return Ok(await _newsQueryFacade.AdminGetNewsByGroupId(id));
+
         }
 
-        #endregion
-
-        #region Post
-
         [HttpPost]
-        public async Task<IActionResult> PostNewsAsync([FromBody] AdminAddNewsDto newsDto)
+        public async Task<IActionResult> PostNews([FromBody] AdminAddNewsDto newsDto)
         {
             try
             {
@@ -110,9 +105,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             }
         }
 
-        #endregion
-
-        #region Delete
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)
@@ -127,12 +119,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
-        #endregion
-
-        #region Update
-
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateNewsAsync(int id, [FromBody] AdminEditNewsDto newsDto)
+        public async Task<ActionResult> UpdateNews(int id, [FromBody] AdminEditNewsDto newsDto)
         {
             var existingNews = await _newsRepository.GetById(id);
             if (existingNews == null)
@@ -145,8 +133,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _logger.LogInformation($"NewsGroup whit id {id} was edited");
             return Ok();
 
-
-            #endregion
         }
     }
 }

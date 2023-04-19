@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
+using MyCmsWebApi2.Persistences.QueryFacade;
+using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Admin;
+using MyCmsWebApi2.Presentations.QueryFacade;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -13,19 +16,24 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<NewsGroupController> _logger;
+        private readonly INewsGroupQueryFacade _newsGroupQueryFacade;
+        private readonly INewsQueryFacade _newsQueryFacade;
 
 
-        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, ILogger<NewsGroupController> logger)
+        public NewsGroupController(INewsGroupRepository newsGroupRepository, IMapper mapper, ILogger<NewsGroupController> logger, INewsQueryFacade newsQueryFacade, INewsGroupQueryFacade newsGroupqueryFacade)
         {
             _newsGroupRepository = newsGroupRepository ?? throw new ArgumentNullException(nameof(newsGroupRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+           
+            _newsQueryFacade = newsQueryFacade;
+            _newsGroupQueryFacade = newsGroupqueryFacade;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdminNewsGroupDto>>> GetAllNewsGroupAsync()
         {
-            var newsGroup = await _newsGroupRepository.GetAll();
+            var newsGroup = await _newsGroupQueryFacade.AdminGetAllNewsGroup();
             var result = _mapper.Map<List<AdminNewsGroupDto>>(newsGroup);
 
             return Ok(result);
@@ -35,16 +43,28 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AdminNewsGroupDto>> GetNewsGroupById(int id)
         {
-            if (await _newsGroupRepository.IsExist(id) == false)
-            {
-                return NotFound();
-            }
+            //if (await _newsGroupRepository.IsExist(id) == false)
+            //{
+            //    return NotFound();
+            //}
 
 
-            var result = await _newsGroupRepository.GetById(id);
+            //var result = await _newsGroupRepository.GetById(id);
 
-            return Ok(_mapper.Map<AdminNewsGroupDto>(result));
+            //return Ok(_mapper.Map<AdminNewsGroupDto>(result));
+
+            return Ok(await _newsGroupQueryFacade.AdminGetNewsGroupById(id));
+
         }
+
+        [HttpGet("NewsByGoupId/{id}")]
+        public async Task<ActionResult<AdminNewsDto>> GetNewsByGroupIdAsync(int id)
+        {
+            return Ok(await _newsQueryFacade.AdminGetNewsByGroupId(id));
+
+        }
+
+
 
 
         [HttpPost]
@@ -62,7 +82,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutPageGroupAsync([FromBody] AdminEditNewsGroupDto newsGroupDto)
+        public async Task<ActionResult> PutPageGroupAsync([FromForm] AdminEditNewsGroupDto newsGroupDto)
         {
             if (await _newsGroupRepository.IsExist(newsGroupDto.Id) == false)
             {

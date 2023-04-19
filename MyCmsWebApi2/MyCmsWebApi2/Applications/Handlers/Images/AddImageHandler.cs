@@ -4,16 +4,20 @@ using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Convertor;
 using MyCmsWebApi2.Infrastructure.Exceptions.BaseException;
+using MyCmsWebApi2.Presentations.QueryFacade;
 
 namespace MyCmsWebApi2.Applications.Handlers.Images
 {
     public class AddImageHandler : IRequestHandler<AddImageCommand, Guid>
     {
         private readonly IImageRepository _imageRepository;
-
-        public AddImageHandler(IImageRepository imageRepository)
+        private readonly INewsQueryFacade _newsQueryFacade;
+        private readonly INewsGroupQueryFacade _newsGroupQueryFacade;
+        public AddImageHandler(IImageRepository imageRepository, INewsQueryFacade newsQueryFacade, INewsGroupQueryFacade newsGroupQueryFacade)
         {
             _imageRepository = imageRepository;
+            _newsQueryFacade = newsQueryFacade;
+            _newsGroupQueryFacade = newsGroupQueryFacade;
         }
 
         public async Task<Guid> Handle(AddImageCommand request, CancellationToken cancellationToken)
@@ -27,6 +31,12 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
             else if (request.NewsGroupId != null && request.NewsId != null)
             {
                 throw new PhoenixGeneralException("حاجی یدونه انتخاب کن ناموصا");
+            }
+
+            if (await _newsQueryFacade.Exist(request.NewsId.Value) == false || await _newsGroupQueryFacade.Exist(request.NewsGroupId) == false)
+
+            {
+                throw new PhoenixGeneralException("حاجی همچین خبر یا گروه خبری ای اصلا وجود نداره ناموصا");
             }
 
             var image = new Image()

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Commands.Images;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Infrastructure.Extensions;
+using MyCmsWebApi2.Persistences.Repositories;
 using MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -16,16 +17,17 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly IImageRepository _imageRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly ILogger<ImagesController> _logger;
 
-        public ImagesController(IImageRepository imageRepository, IMapper mapper, IMediator mediator)
+        public ImagesController(IImageRepository imageRepository, IMapper mapper, IMediator mediator, ILogger<ImagesController> logger)
         {
             _imageRepository = imageRepository;
             _mapper = mapper;
             _mediator = mediator;
+            _logger = logger;
         }
 
 
-        #region Get
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetImageById(Guid id)
@@ -36,20 +38,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             {
                 return NotFound();
             }
-
-            try
-            {
-                return new FileContentResult(Convert.FromBase64String(image.Base64), image.ContentType);
-            }
-            catch (FileNotFoundException)
-            {
-                return NotFound();
-            }
-
-
+            return new FileContentResult(Convert.FromBase64String(image.Base64), image.ContentType);
         }
 
-        #endregion
+      
 
 
         #region Post
@@ -63,23 +55,36 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         }
         #endregion
 
-        #region Update
+      
         [HttpPut]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status200OK)]
 
         public async Task<IActionResult> UpdateImage([FromForm] EditImageDto editImage)
         {
-           
+
             var command = _mapper.Map<EditImageCommand>(editImage);
             var result = await _mediator.Send(command);
             return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteImage(Guid id)
+        {
+            if (await _imageRepository.IsExist(id) == false)
+                return NotFound();
+
+            await _imageRepository.Delete(id);
+
+            _logger.LogInformation($"The News whit ID {id} was Deleted");
+            return Accepted();
+
+        }
     }
-
-
-
-
-
-    #endregion
 }
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
+using MyCmsWebApi2.Domain.Enums;
 using MyCmsWebApi2.Persistences.EF;
 
 namespace MyCmsWebApi2.Persistences.Repositories
@@ -49,7 +50,7 @@ namespace MyCmsWebApi2.Persistences.Repositories
 
         public async Task<List<Comment>> GetCommentsByNewsId(int newsId)
         {
-            return await _context.Comments.Where(x => x.NewsId == newsId).ToListAsync();
+            return await _context.Comments.Where(x => x.NewsId == newsId &&x.CommentStatus==CommentStatus.Accepted).ToListAsync();
 
         }
 

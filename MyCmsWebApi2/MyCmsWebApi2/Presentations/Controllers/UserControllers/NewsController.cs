@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyCmsWebApi2.Applications.Commands.Comments;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
+using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Presentations.Controllers.AdminControllers;
+using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
+using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
 using MyCmsWebApi2.Presentations.QueryFacade;
 
@@ -19,7 +24,8 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         private readonly ILogger<Controllers.AdminControllers.NewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade)
+        private readonly IMediator _mediator;
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -27,22 +33,23 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
             _commentRepository = commentRepository;
             _newsGroupRepository = newsGroupRepository;
             _newsQueryFacade = newsQueryFacade;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsDto>>> GetAllNewsAsync()
+        public async Task<ActionResult<IEnumerable<UserNewsDto>>> GetAllNewsAsync()
         {
             try
             {
-                var news = await _newsQueryFacade.GetAllNews();
+                var news = await _newsQueryFacade.UserGetAllNews();
                 if (news == null)
                 {
                     _logger.LogInformation($"There is not news");
                     return NotFound();
                 }
-                var newsDtos = _mapper.Map<List<NewsDto>>(news);
+                var newsDto = _mapper.Map<List<UserNewsDto>>(news);
 
-                return Ok(newsDtos);
+                return Ok(newsDto);
             }
             catch (Exception ex)
             {
@@ -55,7 +62,7 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         [HttpGet("{id}")]
         public async Task<ActionResult<UserNewsByIdDto>> GetNewsById(int id)
         {
-            var result = await _newsQueryFacade.GetNewsById(id);
+            var result = await _newsQueryFacade.UserGetNewsById(id);
             if (result == null)
             {
                 return NotFound();
@@ -71,5 +78,33 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         {
             return await _commentRepository.GetCommentsByNewsId(id);
         }
+
+        [HttpGet("{id}/newsgroup")]
+        public async Task<ActionResult<UserNewsDto>> GetNewsByGroupIdAsync(int id)
+        {
+            return Ok(await _newsQueryFacade.UserGetNewsByGroupId(id));
+
+        }
+
+
+        [HttpPost("comment")]
+        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostComment([FromBody] UserAddCommentDto commentDto)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var command = _mapper.Map<AddCommentCommand>(commentDto);
+
+            var result = await _mediator.Send(command);
+
+            _logger.LogInformation($"Create Comment with resultId = {result} ");
+            return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
+
+        }
+
     }
 }

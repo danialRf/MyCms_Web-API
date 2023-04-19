@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Presentations\Dtos\CommentsDto\Users\**" />
+    <Content Remove="Presentations\Dtos\CommentsDto\Users\**" />
+    <EmbeddedResource Remove="Presentations\Dtos\CommentsDto\Users\**" />
+    <None Remove="Presentations\Dtos\CommentsDto\Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
@@ -28,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Presentations\Dtos\CommentsDto\Users\" />
     <Folder Include="Presentations\Dtos\ImagesDto\User\" />
   </ItemGroup>
 

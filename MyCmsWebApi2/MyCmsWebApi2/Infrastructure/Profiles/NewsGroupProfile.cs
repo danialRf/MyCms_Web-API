@@ -11,8 +11,12 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
         {
             CreateMap<NewsGroup, AdminNewsGroupDto>();
             CreateMap<AdminAddNewsGroupDto, NewsGroup>();
+
             CreateMap<AdminEditNewsGroupDto, NewsGroup>();
+            
             CreateMap<NewsGroup, UserNewsGroupDto>();
+            CreateMap<UserNewsGroupDto, NewsGroup>();
+
 
         }
     }

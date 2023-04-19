@@ -12,11 +12,11 @@ public class CommentMap : IEntityTypeConfiguration<Comment>
 
         builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.CommentName)
+        builder.Property(p => p.CommentWriterName)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(p => p.CommentEmail)
+        builder.Property(p => p.CommentWriterEmail)
             .IsRequired()
             .HasMaxLength(150);
 

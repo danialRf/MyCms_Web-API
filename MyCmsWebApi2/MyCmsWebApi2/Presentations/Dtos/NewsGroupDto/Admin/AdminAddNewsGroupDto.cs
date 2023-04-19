@@ -2,6 +2,7 @@
 {
     public class AdminAddNewsGroupDto
     {
+        internal int Id { get; set; }   
         public string GroupTitle { get; set; }
     }
 }
