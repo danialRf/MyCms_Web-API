@@ -21,6 +21,10 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
             CreateMap<AdminEditNewsDto, News>();
             CreateMap<News, AdminEditNewsDto>();
             CreateMap<AdminAddNewsDto, News>();
+
+            CreateMap<News,TopNewsDto>();
+            CreateMap<TopNewsDto,News >();
+
         }
     }
 }

@@ -31,6 +31,8 @@ builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<INewsGroupQueryFacade, NewsGroupQueryFacade>();
 builder.Services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
 builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
+builder.Services.AddMemoryCache();
+
 
 
 
@@ -75,5 +77,4 @@ app.MapControllers();
 //}
 
 app.Run();
-
 

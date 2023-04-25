@@ -13,6 +13,7 @@ namespace MyCmsWebApi2.Presentations.QueryFacade
         Task<UserNewsDto> UserGetNewsById(int id);
         Task<IEnumerable<AdminNewsDto>> AdminGetNewsByGroupId(int id);
         Task<IEnumerable<UserNewsDto>> UserGetNewsByGroupId(int id);
+        Task<IList<TopNewsDto>> GetTopNews();
 
 
 

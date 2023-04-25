@@ -16,7 +16,7 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : ControllerBase
+    public class UserNewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
         private readonly ICommentRepository _commentRepository;
@@ -25,7 +25,7 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
+        public UserNewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -39,24 +39,10 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserNewsDto>>> GetAllNewsAsync()
         {
-            try
-            {
-                var news = await _newsQueryFacade.UserGetAllNews();
-                if (news == null)
-                {
-                    _logger.LogInformation($"There is not news");
-                    return NotFound();
-                }
-                var newsDto = _mapper.Map<List<UserNewsDto>>(news);
 
-                return Ok(newsDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred during getting all pagesasync");
-            }
-
+            var news = await _newsQueryFacade.UserGetAllNews();
+            var newsDto = _mapper.Map<List<UserNewsDto>>(news);
+            return Ok(newsDto);
         }
 
         [HttpGet("{id}")]
@@ -104,6 +90,14 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
             _logger.LogInformation($"Create Comment with resultId = {result} ");
             return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
 
+        }
+
+        [HttpGet("top")]
+        public async Task<ActionResult<IEnumerable<TopNewsDto>>> GetTopNewsAsync()
+        {
+            var news = await _newsQueryFacade.GetTopNews();
+           
+            return Ok(news);
         }
 
     }

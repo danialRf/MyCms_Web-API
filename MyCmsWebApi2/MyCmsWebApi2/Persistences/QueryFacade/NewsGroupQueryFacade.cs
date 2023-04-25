@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto;
+using MyCmsWebApi2.Presentations.Dtos.NewsDto.Users;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Users;
 using MyCmsWebApi2.Presentations.QueryFacade;
@@ -30,16 +32,13 @@ namespace MyCmsWebApi2.Persistences.QueryFacade
 
         }
 
-        public async Task<bool> Exist(int? id)
+        public async Task<bool> Exist(int id)
         {
-
-            var newsgroup = await _context.NewsGroup.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            if (newsgroup == null)
-            {
-                return false;
-            }
-            return true;
+            return await _context.NewsGroup.AsNoTracking().AnyAsync(x => x.Id == id);
         }
+
+      
+
 
         public async Task<IEnumerable<UserNewsGroupDto>> UserGetAllNewsGroup()
         =>

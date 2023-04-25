@@ -8,6 +8,7 @@ using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -24,8 +25,9 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
         private readonly ICommentQueryFacade _commentQueryFacade;
+        private readonly IMemoryCache _memoryCache;
         public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<NewsController> logger, ICommentRepository commentRepository,
-            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator, ICommentQueryFacade commentQueryFacade)
+            INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator, ICommentQueryFacade commentQueryFacade, IMemoryCache memoryCache)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -35,6 +37,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _newsQueryFacade = newsQueryFacade;
             _mediator = mediator;
             _commentQueryFacade = commentQueryFacade;
+            _memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -94,7 +97,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
                 var news = _mapper.Map<News>(newsDto);
                 var result = await _newsRepository.Create(news);
-
+                _memoryCache.Remove("topNews");
                 _logger.LogInformation($"Create News whit id {news.Id} ");
                 return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
             }

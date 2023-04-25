@@ -32,12 +32,17 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
             {
                 throw new PhoenixGeneralException("حاجی یدونه انتخاب کن ناموصا");
             }
-
-            if (await _newsQueryFacade.Exist(request.NewsId.Value) == false || await _newsGroupQueryFacade.Exist(request.NewsGroupId) == false)
-
+            if (request.NewsId != null && await _newsQueryFacade.Exist(request.NewsId.Value))
             {
                 throw new PhoenixGeneralException("حاجی همچین خبر یا گروه خبری ای اصلا وجود نداره ناموصا");
             }
+            if (request.NewsGroupId != null && await _newsGroupQueryFacade.Exist(request.NewsGroupId.Value))
+            {
+                throw new PhoenixGeneralException("حاجی همچین خبر یا گروه خبری ای اصلا وجود نداره ناموصا");
+            }
+
+
+
 
             var image = new Image()
             {
