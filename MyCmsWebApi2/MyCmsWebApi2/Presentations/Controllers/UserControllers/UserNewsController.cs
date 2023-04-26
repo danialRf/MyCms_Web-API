@@ -16,6 +16,7 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ModelValidationFilter))]
     public class UserNewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
@@ -77,11 +78,6 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
         public async Task<IActionResult> PostComment([FromBody] UserAddCommentDto commentDto)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var command = _mapper.Map<AddCommentCommand>(commentDto);
 

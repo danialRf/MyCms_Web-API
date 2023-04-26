@@ -1,4 +1,5 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.Applications.Commands.Comments;
 using MyCmsWebApi2.Applications.Repository;
@@ -11,6 +12,7 @@ using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Validator;
 using Serilog;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 Log.Logger = new LoggerConfiguration()
@@ -48,7 +50,9 @@ builder.Services.AddMemoryCache();
 
 #endregion
 
-builder.Services.AddScoped<IValidator<UserAddCommentDto>, CommentValidation>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CommentValidator>();
 
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)
