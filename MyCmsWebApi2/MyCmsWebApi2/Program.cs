@@ -1,10 +1,14 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using MyCmsWebApi2.Applications.Commands.Comments;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Infrastructure.Middlewares;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Persistences.QueryFacade;
 using MyCmsWebApi2.Persistences.Repositories;
+using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
 using MyCmsWebApi2.Presentations.QueryFacade;
+using MyCmsWebApi2.Presentations.Validator;
 using Serilog;
 using System.Reflection;
 
@@ -24,16 +28,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<ICommentQueryFacade, CommentQueryFacade>();
+builder.Services.AddMemoryCache();
+
+#region Repository
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
-builder.Services.AddScoped<INewsGroupQueryFacade, NewsGroupQueryFacade>();
 builder.Services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
+#endregion
+
+#region QueryFacade
+builder.Services.AddScoped<ICommentQueryFacade, CommentQueryFacade>();
+builder.Services.AddScoped<INewsGroupQueryFacade, NewsGroupQueryFacade>();
 builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
-builder.Services.AddMemoryCache();
+#endregion
+
+#region Validator
+builder.Services.AddScoped<IValidator<UserAddCommentDto>, CommentValidation>();
 
 
+
+#endregion
 
 
 var configurationBuilder = new ConfigurationBuilder()
@@ -69,7 +84,6 @@ app.UseMiddleware<ApiExceptionHandlingMiddleware>();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
-
 //using (IServiceScope scope = app.Services.CreateAsyncScope())
 //{
 //    var content = scope.ServiceProvider.GetService<CmsDbContext>();
