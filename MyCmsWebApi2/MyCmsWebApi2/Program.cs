@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.Applications.Repository;
+using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Infrastructure.Middlewares;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Persistences.QueryFacade;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<INewsGroupQueryFacade, NewsGroupQueryFacade>();
 builder.Services.AddScoped<INewsGroupRepository, NewsGroupRepository>();
 builder.Services.AddScoped<INewsQueryFacade, NewsQueryFacade>();
+builder.Services.AddScoped<ModelValidationFilter>();
 builder.Services.AddMemoryCache();
 
 
