@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MyCmsWebApi2.Domain.Enums;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
@@ -41,6 +42,11 @@ namespace MyCmsWebApi2.Persistences.QueryFacade
         public async Task<UserCommentsDto> UserGetCommentById(int id)
         {
             return await _context.Comments.AsNoTracking().ProjectTo<UserCommentsDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<AdminCommentsDto>> AdminGetAllUnverifiedComments()
+        {
+            return await _context.Comments.Where(x=>x.CommentStatus == CommentStatus.Checking).AsNoTracking().ProjectTo<AdminCommentsDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
     }
 }

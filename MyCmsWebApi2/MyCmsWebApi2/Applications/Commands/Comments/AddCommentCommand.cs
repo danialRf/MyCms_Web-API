@@ -14,8 +14,5 @@ namespace MyCmsWebApi2.Applications.Commands.Comments
         public CommentStatus CommentStatus { get; set; }
         public DateTime ChangeStatusDate { get; set; }
         public Guid StatusChangerId { get; set; }
-
-
-
     }
 }

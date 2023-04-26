@@ -25,7 +25,10 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
 
             CreateMap<UserAddCommentDto,AddCommentCommand>();
             CreateMap<AddCommentCommand, UserAddCommentDto>();
-            
+
+            CreateMap<AdminChangeCommentStatusDto, Comment>();
+            CreateMap<Comment, AdminChangeCommentStatusDto>();
+
         }
     }
 }

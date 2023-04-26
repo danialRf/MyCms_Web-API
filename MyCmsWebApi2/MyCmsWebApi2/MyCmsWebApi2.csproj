@@ -41,4 +41,9 @@
     <Folder Include="Presentations\Dtos\ImagesDto\User\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\Shared\CMSShared\CMSShared.csproj" />
+  </ItemGroup>
+
 </Project>

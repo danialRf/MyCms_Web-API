@@ -4,20 +4,21 @@ using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Convertor;
 using MyCmsWebApi2.Infrastructure.Exceptions.BaseException;
-using MyCmsWebApi2.Presentations.QueryFacade;
 
 namespace MyCmsWebApi2.Applications.Handlers.Images
 {
     public class AddImageHandler : IRequestHandler<AddImageCommand, Guid>
     {
         private readonly IImageRepository _imageRepository;
-        private readonly INewsQueryFacade _newsQueryFacade;
-        private readonly INewsGroupQueryFacade _newsGroupQueryFacade;
-        public AddImageHandler(IImageRepository imageRepository, INewsQueryFacade newsQueryFacade, INewsGroupQueryFacade newsGroupQueryFacade)
+        private readonly INewsRepository _newsRepository;
+        private readonly INewsGroupRepository _newsGroupRepository;
+
+
+        public AddImageHandler(IImageRepository imageRepository, INewsRepository newsRepository, INewsGroupRepository newsGroupRepository)
         {
             _imageRepository = imageRepository;
-            _newsQueryFacade = newsQueryFacade;
-            _newsGroupQueryFacade = newsGroupQueryFacade;
+            _newsRepository = newsRepository;
+            _newsGroupRepository = newsGroupRepository;
         }
 
         public async Task<Guid> Handle(AddImageCommand request, CancellationToken cancellationToken)
@@ -32,11 +33,11 @@ namespace MyCmsWebApi2.Applications.Handlers.Images
             {
                 throw new PhoenixGeneralException("حاجی یدونه انتخاب کن ناموصا");
             }
-            if (request.NewsId != null && await _newsQueryFacade.Exist(request.NewsId.Value))
+            if (request.NewsId != null && await _newsRepository.IsExist(request.NewsId.Value))
             {
                 throw new PhoenixGeneralException("حاجی همچین خبر یا گروه خبری ای اصلا وجود نداره ناموصا");
             }
-            if (request.NewsGroupId != null && await _newsGroupQueryFacade.Exist(request.NewsGroupId.Value))
+            if (request.NewsGroupId != null && await _newsGroupRepository.IsExist(request.NewsGroupId.Value))
             {
                 throw new PhoenixGeneralException("حاجی همچین خبر یا گروه خبری ای اصلا وجود نداره ناموصا");
             }

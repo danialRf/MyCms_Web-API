@@ -54,9 +54,11 @@ namespace MyCmsWebApi2.Persistences.Repositories
 
         }
 
-        public Task<int> Update(Comment model)
+        public async Task<int> Update(Comment model)
         {
-            throw new NotImplementedException();
+            _context.Entry(model).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return model.Id;
         }
     }
 }

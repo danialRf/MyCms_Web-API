@@ -12,5 +12,6 @@ namespace MyCmsWebApi2.Presentations.QueryFacade
         Task<UserCommentsDto> UserGetCommentById(int id);
 
         Task<IEnumerable<UserCommentsDto>> UserGetAllComments();
+        Task<IEnumerable<AdminCommentsDto>> AdminGetAllUnverifiedComments();
     }
 }

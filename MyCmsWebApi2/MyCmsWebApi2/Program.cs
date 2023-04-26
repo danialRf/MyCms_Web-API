@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using MyCmsWebApi2.Applications.Commands.Comments;
 using MyCmsWebApi2.Applications.Repository;
+using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Infrastructure.Middlewares;
 using MyCmsWebApi2.Persistences.EF;
@@ -11,6 +12,7 @@ using MyCmsWebApi2.Persistences.Repositories;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Validator;
+using MyCmsWebApi2.Presentations.Validator.Comment;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -52,7 +54,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<CommentValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)

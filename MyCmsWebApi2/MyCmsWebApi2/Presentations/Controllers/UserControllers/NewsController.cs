@@ -16,17 +16,16 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(ModelValidationFilter))]
-    public class UserNewsController : ControllerBase
+    public class NewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<Controllers.AdminControllers.NewsController> _logger;
+        private readonly ILogger<AdminNewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
-        public UserNewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
+        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<AdminNewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -74,13 +73,22 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         }
 
 
-        [HttpPost("comment")]
+        [HttpPost("{id}/comment")]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostComment([FromBody] UserAddCommentDto commentDto)
+        public async Task<IActionResult> PostComment(int id,[FromBody] UserAddCommentDto commentDto)
         {
+            if (await _newsRepository.IsExist(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var command = _mapper.Map<AddCommentCommand>(commentDto);
-
+            command.NewsId = id;
             var result = await _mediator.Send(command);
 
             _logger.LogInformation($"Create Comment with resultId = {result} ");

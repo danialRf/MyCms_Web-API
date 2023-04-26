@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CMSShared.Infrastructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using MyCmsWebApi2.Persistences.EF;
@@ -67,7 +68,7 @@ namespace MyCmsWebApi2.Persistences.QueryFacade
 
         public async Task<IList<TopNewsDto>> GetTopNews()
         {
-            var topNews = await _memoryCache.GetOrCreateAsync("topNews", async entry =>
+            var topNews = await _memoryCache.GetOrCreateAsync(CacheKeys.GetTopNewsKeys(), async entry =>
             {
                 DateTime yesterday = DateTime.Today.AddDays(-1);
                 const double CommentScore = 1;

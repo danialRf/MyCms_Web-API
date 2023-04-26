@@ -9,13 +9,13 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserNewsGroupController : ControllerBase
+    public class NewsGroupController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ILogger<UserNewsGroupController> _logger;
+        private readonly ILogger<NewsGroupController> _logger;
         private readonly INewsGroupQueryFacade _newsGroupQueryFacade;
       
-        public UserNewsGroupController(IMapper mapper, ILogger<UserNewsGroupController> logger, INewsGroupQueryFacade newsGroupQueryFacade)
+        public NewsGroupController(IMapper mapper, ILogger<NewsGroupController> logger, INewsGroupQueryFacade newsGroupQueryFacade)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
