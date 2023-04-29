@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MyCmsWebApi2.Applications.Commands.Comments;
+using MyCmsWebApi2.Applications.Commands.CommentsCommand;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;

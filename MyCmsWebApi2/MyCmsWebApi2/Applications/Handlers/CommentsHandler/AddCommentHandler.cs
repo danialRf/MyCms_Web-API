@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MyCmsWebApi2.Applications.Commands.Comments;
+using MyCmsWebApi2.Applications.Commands.CommentsCommand;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Domain.Enums;
@@ -7,16 +7,16 @@ using MyCmsWebApi2.Infrastructure.Exceptions.BaseException;
 using MyCmsWebApi2.Persistences.Repositories;
 using MyCmsWebApi2.Presentations.QueryFacade;
 
-namespace MyCmsWebApi2.Applications.Handlers.Comments
+namespace MyCmsWebApi2.Applications.Handlers.CommentsHandler
 {
     public class AddCommentHandler : IRequestHandler<AddCommentCommand, int>
     {
         private readonly ICommentRepository _commentRepository;
-        private readonly INewsQueryFacade _newsQueryFacade;
-        public AddCommentHandler(ICommentRepository commentRepository, INewsQueryFacade newsQueryFacade)
+        private readonly INewsRepository _newsRepository;
+        public AddCommentHandler(ICommentRepository commentRepository, INewsRepository newsRepository)
         {
             _commentRepository = commentRepository;
-            _newsQueryFacade = newsQueryFacade;
+            _newsRepository = newsRepository;
         }
 
         public async Task<int> Handle(AddCommentCommand request, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace MyCmsWebApi2.Applications.Handlers.Comments
                 throw new PhoenixGeneralException("حاجی یه متنی بنویس ناموصا");
 
             }
-            if (!await _newsQueryFacade.Exist(request.NewsId))
+            if (!await _newsRepository.IsExist(request.NewsId))
             {
                 throw new PhoenixGeneralException("حاجی چجوری رو اخباری که وجود نداره داری کامنت میذاری ناموصا ؟");
             }
@@ -50,6 +50,8 @@ namespace MyCmsWebApi2.Applications.Handlers.Comments
             };
             var result = await _commentRepository.Create(comment);
             return result;
+
+            
 
         }
     }

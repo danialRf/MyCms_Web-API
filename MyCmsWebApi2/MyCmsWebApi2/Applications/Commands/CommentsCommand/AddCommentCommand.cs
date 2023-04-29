@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MyCmsWebApi2.Domain.Enums;
 
-namespace MyCmsWebApi2.Applications.Commands.Comments
+namespace MyCmsWebApi2.Applications.Commands.CommentsCommand
 {
     public class AddCommentCommand : IRequest<int>
     {

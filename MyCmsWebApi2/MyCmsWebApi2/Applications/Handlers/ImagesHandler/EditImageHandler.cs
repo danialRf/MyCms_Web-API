@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MyCmsWebApi2.Applications.Commands.Images;
+using MyCmsWebApi2.Applications.Commands.ImagesCommand;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Convertor;
@@ -7,7 +7,7 @@ using MyCmsWebApi2.Infrastructure.Exceptions.BaseException;
 using System.Buffers.Text;
 using System.Net;
 
-namespace MyCmsWebApi2.Applications.Handlers.Images
+namespace MyCmsWebApi2.Applications.Handlers.ImagesHandler
 {
     public class EditImageHandler : IRequestHandler<EditImageCommand, Guid>
     {

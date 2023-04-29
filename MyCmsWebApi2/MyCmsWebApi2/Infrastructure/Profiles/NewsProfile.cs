@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MyCmsWebApi2.Applications.Commands.NewsCommand;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto.Admin;
@@ -24,6 +25,9 @@ namespace MyCmsWebApi2.Infrastructure.Profiles
 
             CreateMap<News,TopNewsDto>();
             CreateMap<TopNewsDto,News >();
+
+            CreateMap<AdminAddNewsDto, AddNewsCommand>();
+            CreateMap<AddNewsCommand,AdminAddNewsDto>();    
 
         }
     }

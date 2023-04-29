@@ -9,6 +9,8 @@ using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using Microsoft.Extensions.Caching.Memory;
+using MyCmsWebApi2.Infrastructure.Extensions;
+using MyCmsWebApi2.Applications.Commands.NewsCommand;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -88,24 +90,23 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpPost]
         public async Task<IActionResult> PostNews([FromBody] AdminAddNewsDto newsDto)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
 
-                var news = _mapper.Map<News>(newsDto);
-                var result = await _newsRepository.Create(news);
-                _memoryCache.Remove("topNews");
-                _logger.LogInformation($"Create News whit id {news.Id} ");
-                return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
-            }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
+                return BadRequest(ModelState);
             }
+
+            //var news = _mapper.Map<News>(newsDto);
+            //var result = await _newsRepository.Create(news);
+            //_memoryCache.Remove("topNews");
+            //_logger.LogInformation($"Create News whit id {news.Id} ");
+            //return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
+
+            var command = _mapper.Map<AddNewsCommand>(newsDto);
+            var result = await _mediator.Send(command);
+            _logger.LogInformation($"Create Comment with resultId = {result} ");
+            return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
+
         }
 
 
