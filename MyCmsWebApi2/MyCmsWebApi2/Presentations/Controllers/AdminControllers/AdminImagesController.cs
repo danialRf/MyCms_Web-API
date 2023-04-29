@@ -27,8 +27,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _logger = logger;
         }
 
-
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetImageById(Guid id)
         {
@@ -41,25 +39,18 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return new FileContentResult(Convert.FromBase64String(image.Base64), image.ContentType);
         }
 
-      
-
-
-        #region Post
         [HttpPost]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddImage([FromForm] AddImageDto imageDto)
+        public async Task<IActionResult> AddImage([FromForm] AdminAddImageDto imageDto)
         {
             var command = _mapper.Map<AddImageCommand>(imageDto);
             var result = await _mediator.Send(command);
             return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
         }
-        #endregion
 
-      
         [HttpPut]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status200OK)]
-
-        public async Task<IActionResult> UpdateImage([FromForm] EditImageDto editImage)
+        public async Task<IActionResult> UpdateImage([FromForm] AdminEditImageDto editImage)
         {
 
             var command = _mapper.Map<EditImageCommand>(editImage);

@@ -10,6 +10,7 @@ using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using Microsoft.Extensions.Caching.Memory;
 using CMSShared.Infrastructures;
+using MyCmsWebApi2.Infrastructure.Extensions;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -54,9 +55,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             var newsDto = _mapper.Map<List<AdminNewsDto>>(news);
 
             return Ok(newsDto);
-
-
-
         }
 
         [HttpGet("{id}")]
@@ -86,21 +84,21 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostNews([FromBody] AdminAddNewsDto newsDto)
+        [HttpPost("{newsGroupId}")]
+        [ProducesResponseType(typeof(SingleValue<int>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostNews(int newsGroupId, [FromBody] AdminAddNewsDto newsDto)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+               if(await _newsGroupRepository.IsExist(newsGroupId) ==  false)
+                { return NotFound(); }
 
                 var news = _mapper.Map<News>(newsDto);
+                news.NewsGroupId = newsGroupId;
                 var result = await _newsRepository.Create(news);
                 _memoryCache.Remove(CacheKeys.GetTopNewsKeys());
                 _logger.LogInformation($"Create News whit id {news.Id} ");
-                return CreatedAtAction(nameof(GetNewsById), new { id = news.Id }, news);
+                return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
             }
             catch (Exception ex)
             {
@@ -108,7 +106,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
             }
         }
-
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)

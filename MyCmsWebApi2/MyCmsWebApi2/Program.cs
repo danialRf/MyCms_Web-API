@@ -10,9 +10,11 @@ using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Persistences.QueryFacade;
 using MyCmsWebApi2.Persistences.Repositories;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
+using MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Validator;
 using MyCmsWebApi2.Presentations.Validator.Comment;
+using MyCmsWebApi2.Presentations.Validator.Image;
 using Serilog;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -55,6 +57,10 @@ builder.Services.AddMemoryCache();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+//builder.Services.AddScoped<IValidator<AdminAddImageDto>, AdminAddImageValidator>();
+builder.Services.AddControllers()
+    .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AdminAddImageValidator>());
+
 
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(builder.Environment.ContentRootPath)

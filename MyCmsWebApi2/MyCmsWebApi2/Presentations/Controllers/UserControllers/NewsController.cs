@@ -72,7 +72,6 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 
         }
 
-
         [HttpPost("{id}/comment")]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
         public async Task<IActionResult> PostComment(int id,[FromBody] UserAddCommentDto commentDto)
@@ -103,6 +102,5 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
            
             return Ok(news);
         }
-
     }
 }

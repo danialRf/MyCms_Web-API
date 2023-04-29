@@ -32,7 +32,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _newsRepository = newsRepository;
         }
 
-
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdminCommentsDto>>> GetAllComments()
         {
@@ -75,29 +75,21 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return Ok(result);
         }
 
-
-        [HttpPost("{id}/comment")]
-        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostComment(int id, [FromBody] AdminAddCommentsDto commentDto)
+        [HttpPost("{NewsId}/comment")]
+        [ProducesResponseType(typeof(SingleValue<int>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostComment(int NewsId, [FromBody] AdminAddCommentsDto commentDto)
         {
-            if (await _newsRepository.IsExist(id) == false)
+            if (await _newsRepository.IsExist(NewsId) == false)
             {
                 return BadRequest();
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var command = _mapper.Map<AddCommentCommand>(commentDto);
             command.CommentStatus = CommentStatus.Accepted;
-            command.NewsId = id;
+            command.NewsId = NewsId;
             var result = await _mediator.Send(command);
-
-            _logger.LogInformation($"Create Comment with resultId = {result} ");
+            _logger.LogInformation($"Create Comment with resultId = {result}");
             return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
-
         }
 
         [HttpPut("{id}/status")]
@@ -130,6 +122,5 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return Accepted();
 
         }
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin
 
 {
-    public class AddImageDto
+    public class AdminAddImageDto
     {
         // public Guid Id { get; set; }
         public IFormFile ImageFile { get; set; }

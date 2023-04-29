@@ -34,7 +34,5 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
             }
             return Ok(_mapper.Map<List<UserNewsGroupDto>>(newsGroup));
         }
-        
-
     }
 }

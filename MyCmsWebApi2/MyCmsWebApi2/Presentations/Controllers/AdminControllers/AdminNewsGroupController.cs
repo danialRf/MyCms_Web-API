@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
-using MyCmsWebApi2.Persistences.QueryFacade;
+using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.Dtos.NewsGroupDto.Admin;
 using MyCmsWebApi2.Presentations.QueryFacade;
@@ -39,21 +39,16 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return Ok(result);
         }
 
-
         [HttpGet("{id}")]
         public async Task<ActionResult<AdminNewsGroupDto>> GetNewsGroupById(int id)
         {
-            //if (await _newsGroupRepository.IsExist(id) == false)
-            //{
-            //    return NotFound();
-            //}
+            var result = await _newsGroupQueryFacade.AdminGetNewsGroupById(id);
+
+            if (result==null)
+                return NotFound();
 
 
-            //var result = await _newsGroupRepository.GetById(id);
-
-            //return Ok(_mapper.Map<AdminNewsGroupDto>(result));
-
-            return Ok(await _newsGroupQueryFacade.AdminGetNewsGroupById(id));
+            return Ok(result);
 
         }
 
@@ -64,10 +59,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
-
-
-
         [HttpPost]
+        [ProducesResponseType(typeof(SingleValue<int>), StatusCodes.Status200OK)]
         public async Task<ActionResult<AdminNewsGroupDto>> PostNewsGroupAsync([FromBody] AdminAddNewsGroupDto newsGroupDto)
         {
             if (!ModelState.IsValid)
@@ -78,7 +71,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             var result = await _newsGroupRepository.Create(newsGroup);
 
             _logger.LogInformation($"Create NewsGroup whit id {newsGroup.Id} ");
-            return CreatedAtAction(nameof(GetNewsGroupById), new { id = newsGroup.Id }, newsGroup);
+            return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
         }
 
         [HttpPut]
@@ -102,7 +95,6 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNewsGroupAsync(int id)
         {
@@ -118,6 +110,5 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return Accepted();
 
         }
-
     }
 }
