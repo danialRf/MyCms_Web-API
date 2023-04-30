@@ -17,6 +17,7 @@ namespace MyCmsWebApi2.Persistences.EF
         public DbSet<Image> Images { get; set; }
         public DbSet<NewsGroup> NewsGroup { get; set; }
         public DbSet<News> News { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CmsDbContext).Assembly);

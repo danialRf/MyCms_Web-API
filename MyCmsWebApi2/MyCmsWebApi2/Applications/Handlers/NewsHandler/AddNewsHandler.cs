@@ -13,10 +13,11 @@ namespace MyCmsWebApi2.Applications.Handlers.NewsHandler
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
 
-        public AddNewsHandler(INewsRepository newsRepository, IMapper mapper)
+        public AddNewsHandler(INewsRepository newsRepository, IMapper mapper, IMemoryCache memoryCache)
         {
             _newsRepository = newsRepository;
             _mapper = mapper;
+            _memoryCache = memoryCache;
         }
 
         public async Task<int> Handle(AddNewsCommand request, CancellationToken cancellationToken)

@@ -22,11 +22,11 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
         private readonly INewsRepository _newsRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<Controllers.AdminControllers.NewsController> _logger;
+        private readonly ILogger<Controllers.AdminControllers.AdminNewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
-        public UserNewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.NewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
+        public UserNewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.AdminNewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
