@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyCmsWebApi2.Applications.Commands.Images;
+using MyCmsWebApi2.Applications.Commands.ImagesCommand;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Persistences.Repositories;
@@ -27,6 +27,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             _logger = logger;
         }
 
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetImageById(Guid id)
         {
@@ -39,6 +41,10 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             return new FileContentResult(Convert.FromBase64String(image.Base64), image.ContentType);
         }
 
+      
+
+
+        #region Post
         [HttpPost]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddImage([FromForm] AdminAddImageDto imageDto)
@@ -47,9 +53,12 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             var result = await _mediator.Send(command);
             return new ObjectResult(new SingleValue<Guid>(result)) { StatusCode = StatusCodes.Status201Created };
         }
+        #endregion
 
+      
         [HttpPut]
         [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status200OK)]
+
         public async Task<IActionResult> UpdateImage([FromForm] AdminEditImageDto editImage)
         {
 

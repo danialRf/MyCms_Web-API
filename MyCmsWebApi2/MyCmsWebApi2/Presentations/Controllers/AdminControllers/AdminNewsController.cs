@@ -9,8 +9,8 @@ using MyCmsWebApi2.Presentations.Dtos.NewsDto;
 using MyCmsWebApi2.Presentations.QueryFacade;
 using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using Microsoft.Extensions.Caching.Memory;
-using CMSShared.Infrastructures;
 using MyCmsWebApi2.Infrastructure.Extensions;
+using MyCmsWebApi2.Applications.Commands.NewsCommand;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
@@ -55,6 +55,9 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
             var newsDto = _mapper.Map<List<AdminNewsDto>>(news);
 
             return Ok(newsDto);
+
+
+
         }
 
         [HttpGet("{id}")]
@@ -84,28 +87,24 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 
         }
 
-        [HttpPost("{newsGroupId}")]
-        [ProducesResponseType(typeof(SingleValue<int>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostNews(int newsGroupId, [FromBody] AdminAddNewsDto newsDto)
+        [HttpPost]
+        public async Task<IActionResult> PostNews([FromBody] AdminAddNewsDto newsDto)
         {
-            try
-            {
-               if(await _newsGroupRepository.IsExist(newsGroupId) ==  false)
-                { return NotFound(); }
 
-                var news = _mapper.Map<News>(newsDto);
-                news.NewsGroupId = newsGroupId;
-                var result = await _newsRepository.Create(news);
-                _memoryCache.Remove(CacheKeys.GetTopNewsKeys());
-                _logger.LogInformation($"Create News whit id {news.Id} ");
-                return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
-            }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
+                return BadRequest(ModelState);
             }
+
+          
+
+            var command = _mapper.Map<AddNewsCommand>(newsDto);
+            var result = await _mediator.Send(command);
+            _logger.LogInformation($"Create Comment with resultId = {result} ");
+            return new ObjectResult(new SingleValue<int>(result)) { StatusCode = StatusCodes.Status201Created };
+
         }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNews(int id)
@@ -123,16 +122,11 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateNews(int id, [FromBody] AdminEditNewsDto newsDto)
         {
-            var existingNews = await _newsRepository.GetById(id);
-            if (existingNews == null)
-            {
-                return NotFound();
-            }
-            existingNews.UpdateNews(id, newsDto.Id, newsDto.Title, newsDto.ShortDescription, newsDto.Text, newsDto.ShowInSlider, newsDto.Tags);
-
-            await _newsRepository.Update(existingNews);
-            _logger.LogInformation($"NewsGroup whit id {id} was edited");
-            return Ok();
+            
+            var command = _mapper.Map<EditNewsCommand>(newsDto);
+            command.Id = id;
+            var result = await _mediator.Send(command);        
+            return Ok(new SingleValue<int>(result));
 
         }
     }

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyCmsWebApi2.Applications.Commands.Comments;
+using MyCmsWebApi2.Applications.Commands.CommentsCommand;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Extensions;
@@ -16,16 +16,17 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : ControllerBase
+    [ServiceFilter(typeof(ModelValidationFilter))]
+    public class UserNewsController : ControllerBase
     {
         private readonly INewsRepository _newsRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<AdminNewsController> _logger;
+        private readonly ILogger<Controllers.AdminControllers.AdminNewsController> _logger;
         private readonly INewsGroupRepository _newsGroupRepository;
         private readonly INewsQueryFacade _newsQueryFacade;
         private readonly IMediator _mediator;
-        public NewsController(INewsRepository newsRepository, IMapper mapper, ILogger<AdminNewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
+        public UserNewsController(INewsRepository newsRepository, IMapper mapper, ILogger<Controllers.AdminControllers.AdminNewsController> logger, ICommentRepository commentRepository, INewsGroupRepository newsGroupRepository, INewsQueryFacade newsQueryFacade, IMediator mediator)
         {
             _newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -72,22 +73,14 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
 
         }
 
-        [HttpPost("{id}/comment")]
-        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostComment(int id,[FromBody] UserAddCommentDto commentDto)
-        {
-            if (await _newsRepository.IsExist(id) == false)
-            {
-                return BadRequest();
-            }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        [HttpPost("comment")]
+        [ProducesResponseType(typeof(SingleValue<Guid>), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostComment([FromBody] UserAddCommentDto commentDto)
+        {
 
             var command = _mapper.Map<AddCommentCommand>(commentDto);
-            command.NewsId = id;
+
             var result = await _mediator.Send(command);
 
             _logger.LogInformation($"Create Comment with resultId = {result} ");
@@ -102,5 +95,6 @@ namespace MyCmsWebApi2.Presentations.Dtos.NewsDto.Users
            
             return Ok(news);
         }
+
     }
 }
