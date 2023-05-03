@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Commands.ImagesCommand;
 using MyCmsWebApi2.Applications.Repository;
@@ -12,6 +13,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+
     public class AdminImagesController : ControllerBase
     {
         private readonly IImageRepository _imageRepository;

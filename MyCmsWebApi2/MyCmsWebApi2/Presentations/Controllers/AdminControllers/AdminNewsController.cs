@@ -11,11 +11,14 @@ using MyCmsWebApi2.Presentations.Dtos.CommentsDto.Admin;
 using Microsoft.Extensions.Caching.Memory;
 using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Applications.Commands.NewsCommand;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Policy = "Admin")]
 
     public class AdminNewsController : ControllerBase
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Commands.CommentsCommand;
 using MyCmsWebApi2.Applications.Notifications;
@@ -17,16 +18,18 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Policy = "Admin")]
 
-    public class CommentsController : ControllerBase
+    public class AdminCommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        private readonly ILogger<CommentsController> _logger;
+        private readonly ILogger<AdminCommentsController> _logger;
         private readonly ICommentQueryFacade _commentQueryFacade;
 
-        public CommentsController(ICommentRepository commentRepository, IMapper mapper, IMediator mediator, ILogger<CommentsController> logger, ICommentQueryFacade commentQueryFacade)
+        public AdminCommentsController(ICommentRepository commentRepository, IMapper mapper, IMediator mediator, ILogger<AdminCommentsController> logger, ICommentQueryFacade commentQueryFacade)
         {
             _commentRepository = commentRepository;
             _mapper = mapper;

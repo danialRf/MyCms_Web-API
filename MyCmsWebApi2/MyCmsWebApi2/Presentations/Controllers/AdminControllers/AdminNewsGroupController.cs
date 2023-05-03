@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCmsWebApi2.Applications.Repository;
 using MyCmsWebApi2.Domain.Entities;
@@ -11,6 +12,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+
     public class AdminNewsGroupController : ControllerBase
     {
         private readonly INewsGroupRepository _newsGroupRepository;
