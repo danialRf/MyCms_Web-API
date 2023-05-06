@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MyCmsWebApi2.Domain.Entities;
 
 public class RoleSeeder
 {
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-    public RoleSeeder(RoleManager<IdentityRole> roleManager)
+    public RoleSeeder(RoleManager<IdentityRole<Guid>> roleManager)
     {
         _roleManager = roleManager;
     }
@@ -13,7 +14,7 @@ public class RoleSeeder
     {
         if (!await _roleManager.RoleExistsAsync("Admin"))
         {
-            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            await _roleManager.CreateAsync(new IdentityRole<Guid>("Admin"));
         }
     }
 }

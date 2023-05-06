@@ -31,5 +31,6 @@ public class CommentMap : IEntityTypeConfiguration<Comment>
             .WithMany(p => p.Comments)
             .HasForeignKey(p => p.NewsId)
             .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

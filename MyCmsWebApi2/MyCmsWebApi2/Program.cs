@@ -37,6 +37,13 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configurationBuilder = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var configuration = configurationBuilder.Build();
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<CmsDbContext>(options => options.UseSqlServer(connectionString));
+
 builder.Host.UseSerilog();
 
 // Add services to the container.
@@ -123,7 +130,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
 })
     .AddEntityFrameworkStores<CmsDbContext>()
     .AddDefaultTokenProviders()
-    .AddRoles<IdentityRole>()
+    .AddRoles<IdentityRole<Guid>>()
     .AddUserManager<UserManager<ApplicationUser>>()
     .AddSignInManager<SignInManager<ApplicationUser>>();
 
@@ -160,22 +167,8 @@ builder.Services.AddControllers()
 
 #endregion
 
-var configurationBuilder = new ConfigurationBuilder()
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-var configuration = configurationBuilder.Build();
-var connectionString = configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<CmsDbContext>(options => options.UseSqlServer(connectionString));
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy =>
-    {
-        policy.RequireRole("Admin");
-    });
-});
-builder.Services.AddAuthorization();
 builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddSerilog(dispose: true);

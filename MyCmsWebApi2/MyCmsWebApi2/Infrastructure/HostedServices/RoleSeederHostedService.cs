@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MyCmsWebApi2.Domain.Entities;
 
 namespace MyCmsWebApi2.Infrastructure.HostedServices
 {
@@ -14,7 +15,7 @@ namespace MyCmsWebApi2.Infrastructure.HostedServices
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             using var scope = _serviceProvider.CreateScope();
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             var roleSeeder = new RoleSeeder(roleManager);
             await roleSeeder.SeedAsync();
         }

@@ -15,7 +15,10 @@ public class Comment
     public CommentStatus CommentStatus { get; set; }
     public DateTime ChangeStatusDate { get; set; }
     public Guid StatusChangerId { get; set; }
+   // public int UserId { get; set; }
+    public virtual IList<CommentLike> CommentLikes { get; set; }
 
- 
+
+
 
 }

@@ -6,8 +6,8 @@ namespace MyCmsWebApi2.Domain.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>
 {
-    public String Name { get; set; }
-    public String FamilyName { get; set; }
+    public string Name { get; set; }
+    public string FamilyName { get; set; }
     
     
     
