@@ -8,10 +8,11 @@ public class ApplicationUser : IdentityUser<Guid>
 {
     public string Name { get; set; }
     public string FamilyName { get; set; }
-    
-    
-    
-    
+
+    public ICollection<RefreshToken> RefreshTokens { get; set; }
+
+
+
 
 
 

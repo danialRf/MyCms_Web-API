@@ -18,6 +18,8 @@ namespace MyCmsWebApi2.Persistences.EF
         public DbSet<NewsGroup> NewsGroup { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<CommentLike> CommentLikes { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

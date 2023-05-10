@@ -6,7 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Domain.Enums;
 using MyCmsWebApi2.Infrastructure.Extensions;
+using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Presentations.Dtos.AuthenticationDto;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,14 +22,17 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration Configuration;
         private readonly JwtTokenGenerator _jwtTokenGenerator;
+        private readonly CmsDbContext _dbContext;
+        private readonly TokenValidationParameters _validationParameters;
 
 
-
-        public RegistrationController(UserManager<ApplicationUser> userManager, IConfiguration configuration, JwtTokenGenerator jwtTokenGenerator)
+        public RegistrationController(UserManager<ApplicationUser> userManager, IConfiguration configuration, JwtTokenGenerator jwtTokenGenerator, CmsDbContext dbContext, TokenValidationParameters validationParameters)
         {
             _userManager = userManager;
             Configuration = configuration;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _dbContext = dbContext;
+            _validationParameters = validationParameters;
         }
         [HttpPost]
         [AllowAnonymous]
@@ -41,6 +46,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
                 Email = model.Email,
                 Name = model.Name,
                 FamilyName = model.FamilyName
+                
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -52,6 +58,8 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
                     // First user registered is made an Admin
                     await _userManager.AddToRoleAsync(user, "Admin");
                 }
+                await _userManager.AddToRoleAsync(user, "User");
+                
 
                 return Ok(new { message = "Registration successful" });
             }
@@ -77,9 +85,9 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
                 // Check if user has Admin role
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-                var tokenString = _jwtTokenGenerator.GenerateToken(user.UserName, user.Email, user.Id.ToString(), isAdmin);
+                var tokenString =await _jwtTokenGenerator.GenerateToken(user);
 
-                return Ok(new { token = tokenString });
+                return Ok(tokenString);
             }
 
             return Unauthorized();

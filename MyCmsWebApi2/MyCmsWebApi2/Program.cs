@@ -78,6 +78,9 @@ builder.Services.AddSwaggerGen(c =>
         });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<JwtTokenGenerator>();
+builder.Services.AddScoped<TokenValidationParameters> ();
+
 
 #region Repository
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -97,24 +100,32 @@ builder.Services.AddMemoryCache();
 #endregion
 
 #region Authentication
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(key: "Jwt:Secret")); 
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration[key: "Jwt:Key"]);
+
+var tokenValidationParameter = new TokenValidationParameters
+{
+    ValidateIssuer = false,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    RequireExpirationTime = true,
+    ValidateIssuerSigningKey = false,
+    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+    ValidAudience = "FaghatKhooba",
+    IssuerSigningKey = new SymmetricSecurityKey(key),
+};
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = false,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = "FaghatKhooba",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
+    options.SaveToken = true;
+    options.TokenValidationParameters = tokenValidationParameter;
 });
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>

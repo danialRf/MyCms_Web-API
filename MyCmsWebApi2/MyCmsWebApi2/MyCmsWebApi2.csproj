@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Applications\Handlers\CommentLikesHandler\**" />
     <Compile Remove="Presentations\Dtos\CommentsDto\Users\**" />
     <Compile Remove="`\**" />
+    <Content Remove="Applications\Handlers\CommentLikesHandler\**" />
     <Content Remove="Presentations\Dtos\CommentsDto\Users\**" />
     <Content Remove="`\**" />
+    <EmbeddedResource Remove="Applications\Handlers\CommentLikesHandler\**" />
     <EmbeddedResource Remove="Presentations\Dtos\CommentsDto\Users\**" />
     <EmbeddedResource Remove="`\**" />
+    <None Remove="Applications\Handlers\CommentLikesHandler\**" />
     <None Remove="Presentations\Dtos\CommentsDto\Users\**" />
     <None Remove="`\**" />
   </ItemGroup>
@@ -44,7 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Applications\Handlers\CommentLikesHandler\" />
     <Folder Include="wwwroot\" />
     <Folder Include="Presentations\Dtos\ImagesDto\User\" />
   </ItemGroup>
