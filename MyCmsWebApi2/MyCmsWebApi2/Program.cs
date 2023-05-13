@@ -4,28 +4,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyCmsWebApi2.Applications.Repository;
-using Microsoft.Extensions.Configuration;
 using MyCmsWebApi2.Domain.Entities;
 using MyCmsWebApi2.Infrastructure.Extensions;
 using MyCmsWebApi2.Infrastructure.Middlewares;
 using MyCmsWebApi2.Persistences.EF;
 using MyCmsWebApi2.Persistences.QueryFacade;
 using MyCmsWebApi2.Persistences.Repositories;
-using MyCmsWebApi2.Presentations.Dtos.CommentsDto.User;
-using MyCmsWebApi2.Presentations.Dtos.ImagesDto.Admin;
 using MyCmsWebApi2.Presentations.QueryFacade;
-using MyCmsWebApi2.Presentations.Validator;
-using MyCmsWebApi2.Presentations.Validator.Comment;
 using MyCmsWebApi2.Presentations.Validator.Image;
 using Serilog;
-using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Reflection.PortableExecutable;
 using MyCmsWebApi2.Infrastructure.HostedServices;
 
 Log.Logger = new LoggerConfiguration()

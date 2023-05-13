@@ -9,15 +9,20 @@ namespace MyCmsWebApi2.Persistences.EF.ModelMap
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
             builder.HasKey(x => x.Id);
+
             builder.Property(p => p.JwtId)
              .IsRequired();
+
             builder.Property(p => p.Token)
             .IsRequired();
+
             builder.Property(p => p.UserId)
             .IsRequired();
 
-            
-
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.RefreshTokens)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

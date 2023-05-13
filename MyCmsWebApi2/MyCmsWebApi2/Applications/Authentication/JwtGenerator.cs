@@ -59,7 +59,7 @@ namespace MyCmsWebApi2.Infrastructure.Extensions
                 Expires=DateTime.UtcNow.AddMonths(6),
                 IsRevoked = false,
                 IsUsed = false,
-                UserId = user.Id.ToString(),
+                UserId = user.Id,
 
             };
 
