@@ -28,21 +28,26 @@ namespace MyCmsWebApi2.Infrastructure.Extensions
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!.ToString());
-            var userRole = _userManager.GetRolesAsync(user);
-            var claimsIdentity = new ClaimsIdentity(new Claim[]
+            var userRoles = _userManager.GetRolesAsync(user).Result;
+            var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Sid,user.Id.ToString()),
                 new Claim(ClaimTypes.Email,  user.Email),
-                new Claim(ClaimTypes.Role, userRole.ToString()), // Add role claim
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat,DateTime.Now.ToUniversalTime().ToString())
-            });
+            };
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+
+            }
+            var claimsIdentity = new ClaimsIdentity(claims.ToArray());
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration["Jwt:ExpiryTimeFrame"])),
+                Expires = DateTime.UtcNow.Add(TimeSpan.Parse(_configuration["Jwt:ExpiryTimeFrame"]!)),
                 Audience = "FaghatKhooba", // specify the audience here
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 

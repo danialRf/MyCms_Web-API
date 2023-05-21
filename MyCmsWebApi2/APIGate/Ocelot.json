@@ -1,0 +1,16 @@
+{
+  "Routes": [
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7151
+        }
+      ],
+      "DownstreamPathTemplate": "/api/AdminNews",
+      "DownstreamScheme": "https",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/Admin/News"
+    }
+  ]
+}

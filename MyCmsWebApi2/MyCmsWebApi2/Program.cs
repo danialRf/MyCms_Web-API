@@ -93,7 +93,7 @@ builder.Services.AddMemoryCache();
 #region Authentication
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(key: "Jwt:Secret")); 
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration[key: "Jwt:Key"]);
+var key = Encoding.ASCII.GetBytes(builder.Configuration[key: "Jwt:Key"]!);
 
 var tokenValidationParameter = new TokenValidationParameters
 {
@@ -118,6 +118,8 @@ builder.Services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = tokenValidationParameter;
 });
+
+builder.Services.AddSingleton(tokenValidationParameter);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
 {

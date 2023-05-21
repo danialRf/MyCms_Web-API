@@ -18,7 +18,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.AdminControllers
     [ApiController]
     [Route("api/admin/[controller]")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "Admin")]
 
     public class AdminNewsController : ControllerBase
     {

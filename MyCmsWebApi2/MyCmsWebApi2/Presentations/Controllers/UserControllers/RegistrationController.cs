@@ -46,7 +46,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
                 Email = model.Email,
                 Name = model.Name,
                 FamilyName = model.FamilyName
-                
+
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -59,7 +59,7 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
                     await _userManager.AddToRoleAsync(user, "Admin");
                 }
                 await _userManager.AddToRoleAsync(user, "User");
-                
+
 
                 return Ok(new { message = "Registration successful" });
             }
@@ -83,17 +83,14 @@ namespace MyCmsWebApi2.Presentations.Controllers.UserControllers
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 // Check if user has Admin role
-                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-                var tokenString =await _jwtTokenGenerator.GenerateToken(user);
-
-                return Ok(tokenString);
+                if (await _userManager.IsInRoleAsync(user, "Admin") && await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    var tokenString = await _jwtTokenGenerator.GenerateToken(user);
+                    return Ok(tokenString);
+                }
             }
-
             return Unauthorized();
         }
-
-
-
     }
 }
